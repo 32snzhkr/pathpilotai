@@ -1,0 +1,2035 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PathPilot AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      * { font-family: 'Inter', sans-serif; }
+      @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-10px); }
+      }
+      @keyframes pulse-glow {
+        0%, 100% { box-shadow: 0 0 20px rgba(99, 102, 241, 0.4); }
+        50% { box-shadow: 0 0 40px rgba(99, 102, 241, 0.8); }
+      }
+      @keyframes shimmer {
+        0% { background-position: -200% center; }
+        100% { background-position: 200% center; }
+      }
+      @keyframes slide-up {
+        from { opacity: 0; transform: translateY(30px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      .float { animation: float 3s ease-in-out infinite; }
+      .pulse-glow { animation: pulse-glow 2s ease-in-out infinite; }
+      .slide-up { animation: slide-up 0.6s ease-out forwards; }
+      .fade-in { animation: fade-in 0.8s ease-out forwards; }
+      .shimmer-text {
+        background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899, #6366f1);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: shimmer 3s linear infinite;
+      }
+      .glass {
+        background: rgba(255, 255, 255, 0.045);
+        backdrop-filter: blur(24px);
+        border: 1px solid rgba(255, 255, 255, 0.09);
+      }
+      .glass-strong {
+        background: rgba(255, 255, 255, 0.07);
+        backdrop-filter: blur(32px);
+        border: 1px solid rgba(255, 255, 255, 0.13);
+      }
+      .card-hover {
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .card-hover:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255,255,255,0.07);
+      }
+      .progress-bar-fill {
+        transition: width 1.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .tag-pill {
+        display: inline-flex;
+        align-items: center;
+        font-size: 0.7rem;
+        font-weight: 600;
+        padding: 2px 10px;
+        border-radius: 999px;
+        letter-spacing: 0.02em;
+      }
+      .section-fade {
+        animation: slide-up 0.7s ease-out both;
+      }
+      @keyframes bar-grow {
+        from { width: 0%; }
+      }
+      .bar-grow { animation: bar-grow 1.4s cubic-bezier(0.4,0,0.2,1) both; }
+      @keyframes scale-in {
+        from { opacity: 0; transform: scale(0.92) translateY(16px); }
+        to   { opacity: 1; transform: scale(1)    translateY(0); }
+      }
+      @keyframes scale-out {
+        from { opacity: 1; transform: scale(1)    translateY(0); }
+        to   { opacity: 0; transform: scale(0.92) translateY(16px); }
+      }
+      @keyframes check-pop {
+        0%   { transform: scale(0) rotate(-15deg); opacity: 0; }
+        60%  { transform: scale(1.2) rotate(5deg); opacity: 1; }
+        100% { transform: scale(1) rotate(0deg);  opacity: 1; }
+      }
+      @keyframes ring-spin {
+        to { transform: rotate(360deg); }
+      }
+      @keyframes count-up {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+      @keyframes demo-slide {
+        from { opacity: 0; transform: translateX(24px); }
+        to   { opacity: 1; transform: translateX(0); }
+      }
+      @keyframes glow-pulse {
+        0%, 100% { opacity: .6; }
+        50%       { opacity: 1; }
+      }
+      .modal-enter   { animation: scale-in  0.35s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+      .modal-exit    { animation: scale-out 0.25s ease-in forwards; }
+      .check-pop     { animation: check-pop 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+      .ring-spin     { animation: ring-spin 0.9s linear infinite; }
+      .demo-slide    { animation: demo-slide 0.4s ease-out forwards; }
+      .glow-pulse    { animation: glow-pulse 2s ease-in-out infinite; }
+      .btn-active:active { transform: scale(0.97); }
+      ::-webkit-scrollbar { width: 6px; }
+      ::-webkit-scrollbar-track { background: #0f0f1a; }
+      ::-webkit-scrollbar-thumb { background: #6366f1; border-radius: 3px; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel">
+      const { useState, useEffect, useRef } = React;
+
+      // ── Icons (inline SVG components) ──────────────────────────────────────
+      const MapIcon = () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+          <polygon points="3 6 9 3 15 6 21 3 21 18 15 21 9 18 3 21"/>
+          <line x1="9" y1="3" x2="9" y2="18"/><line x1="15" y1="6" x2="15" y2="21"/>
+        </svg>
+      );
+      const TrendIcon = () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/>
+          <polyline points="17 6 23 6 23 12"/>
+        </svg>
+      );
+      const UnivIcon = () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+          <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+      );
+      const CheckIcon = ({ checked }) => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+          {checked ? <polyline points="20 6 9 17 4 12"/> : <circle cx="12" cy="12" r="10"/>}
+        </svg>
+      );
+      const FireIcon = () => (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+          <path d="M12 23a7 7 0 0 1-7-7c0-3.5 2.5-6 4-8 .5 2 1 3 2 3.5-.5-2 1-4.5 2-6 1 3 3 5 3 7.5.5-1 .5-2.5.5-3.5 1.5 2 2.5 4 2.5 6.5a7 7 0 0 1-7 7z"/>
+        </svg>
+      );
+      const StarIcon = () => (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
+          <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+        </svg>
+      );
+      const ArrowIcon = () => (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-5 h-5">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      );
+      const SparkleIcon = () => (
+        <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+          <path d="M12 3L13.5 8.5H19L14.25 11.75L15.75 17.25L12 14L8.25 17.25L9.75 11.75L5 8.5H10.5L12 3Z"/>
+        </svg>
+      );
+
+      // ── Navbar ─────────────────────────────────────────────────────────────
+      function Navbar({ onCTA }) {
+        const [scrolled, setScrolled] = useState(false);
+        useEffect(() => {
+          const handler = () => setScrolled(window.scrollY > 20);
+          window.addEventListener('scroll', handler);
+          return () => window.removeEventListener('scroll', handler);
+        }, []);
+        return (
+          <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? 'glass py-3' : 'py-5'}`}>
+            <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                  <SparkleIcon />
+                </div>
+                <span className="text-white font-bold text-xl tracking-tight">PathPilot <span className="text-indigo-400">AI</span></span>
+              </div>
+              <div className="hidden md:flex items-center gap-8 text-sm text-gray-400">
+                <a href="#features" className="hover:text-white transition-colors">Features</a>
+                <a href="#dashboard" className="hover:text-white transition-colors">Dashboard</a>
+                <a href="#why-us" className="hover:text-white transition-colors">Why Us</a>
+              </div>
+              <button
+                onClick={onCTA}
+                className="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 hover:shadow-lg hover:shadow-indigo-500/30"
+              >
+                Get Started Free
+              </button>
+            </div>
+          </nav>
+        );
+      }
+
+      // ── Hero ───────────────────────────────────────────────────────────────
+      function Hero({ onCTA, onDemo }) {
+        return (
+          <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-24 pb-16">
+            {/* Background blobs */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl" />
+              <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-purple-600/20 rounded-full blur-3xl" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-pink-600/10 rounded-full blur-3xl" />
+              {/* Grid */}
+              <div className="absolute inset-0 opacity-5"
+                style={{backgroundImage: 'linear-gradient(rgba(255,255,255,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.1) 1px, transparent 1px)', backgroundSize: '60px 60px'}} />
+            </div>
+
+            <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-8 text-sm text-indigo-300 slide-up">
+                <span className="flex h-2 w-2 rounded-full bg-indigo-400 animate-pulse" />
+                Built to help students plan their academic future with clarity
+              </div>
+
+              <h1 className="text-5xl md:text-7xl font-black text-white mb-6 leading-tight slide-up" style={{animationDelay:'0.1s'}}>
+                Your AI roadmap to{' '}
+                <span className="shimmer-text">university success</span>
+              </h1>
+
+              <p className="text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed slide-up" style={{animationDelay:'0.2s'}}>
+                Plan exams, build standout projects, and craft winning applications — all guided by your personal AI advisor built for ambitious teens.
+              </p>
+
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 slide-up" style={{animationDelay:'0.3s'}}>
+                <button
+                  onClick={onCTA}
+                  className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-lg px-8 py-4 rounded-2xl transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/40 hover:scale-105 pulse-glow flex items-center gap-3 btn-active"
+                >
+                  <SparkleIcon />
+                  Generate My Roadmap
+                  <ArrowIcon />
+                  <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
+                </button>
+                <button
+                  onClick={onDemo}
+                  className="group glass text-gray-300 hover:text-white font-semibold text-lg px-8 py-4 rounded-2xl transition-all duration-200 hover:bg-white/10 hover:border-white/20 btn-active flex items-center gap-3"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5 text-indigo-400 group-hover:scale-110 transition-transform">
+                    <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="1.5" opacity=".4"/>
+                    <polygon points="10 8 16 12 10 16" fill="currentColor"/>
+                  </svg>
+                  Watch Demo
+                </button>
+              </div>
+
+              {/* Trust strip */}
+              <div className="mt-12 flex flex-wrap items-center justify-center gap-6 text-sm text-gray-500 slide-up" style={{animationDelay:'0.4s'}}>
+                {[
+                  { icon:'🎓', text:'Designed for university-bound students' },
+                  { icon:'🔒', text:'Your data stays in your browser' },
+                  { icon:'⚡', text:'Roadmap ready in under 2 minutes' },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-2">
+                    <span className="text-base">{item.icon}</span>
+                    <span className="text-gray-400">{item.text}</span>
+                    {i < 2 && <span className="hidden sm:block w-px h-4 bg-white/10 ml-6" />}
+                  </div>
+                ))}
+              </div>
+
+              {/* Floating stats */}
+              <div className="mt-16 grid grid-cols-3 gap-4 max-w-lg mx-auto slide-up" style={{animationDelay:'0.5s'}}>
+                {[
+                  {value:'94%', label:'Admission rate'},
+                  {value:'3.2x', label:'More organized'},
+                  {value:'47h', label:'Saved per month'},
+                ].map((s,i) => (
+                  <div key={i} className="glass rounded-2xl p-4 card-hover">
+                    <div className="text-2xl font-black text-white">{s.value}</div>
+                    <div className="text-xs text-gray-400 mt-1">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // ── Features ───────────────────────────────────────────────────────────
+      function Features() {
+        const cards = [
+          {
+            icon: <MapIcon />,
+            gradient: 'from-indigo-500 to-blue-500',
+            glow: 'hover:shadow-indigo-500/30',
+            title: 'AI Roadmap',
+            desc: 'Get a personalized, step-by-step action plan built around your dream schools, strengths, and timeline — updated as you grow.',
+            tags: ['Personalized','Adaptive','Smart'],
+          },
+          {
+            icon: <TrendIcon />,
+            gradient: 'from-purple-500 to-pink-500',
+            glow: 'hover:shadow-purple-500/30',
+            title: 'Progress Tracking',
+            desc: 'Visualize every milestone with live dashboards. Track SAT prep, extracurriculars, essays, and more in one clean view.',
+            tags: ['Visual','Real-time','Motivating'],
+          },
+          {
+            icon: <UnivIcon />,
+            gradient: 'from-pink-500 to-orange-500',
+            glow: 'hover:shadow-pink-500/30',
+            title: 'University Planner',
+            desc: 'Research, compare, and track your college list. Deadline alerts, requirement checklists, and fit scores — all built in.',
+            tags: ['Deadline alerts','Comparison','Fit score'],
+          },
+        ];
+        return (
+          <section id="features" className="py-24 relative">
+            <div className="max-w-7xl mx-auto px-6">
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-4 text-sm text-purple-300">
+                  <SparkleIcon /> Everything you need
+                </div>
+                <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+                  Built for the<br /><span className="shimmer-text">ambitious student</span>
+                </h2>
+                <p className="text-gray-400 text-lg max-w-xl mx-auto">Three powerful tools, one cohesive platform to get you from "I want to apply" to "I got in."</p>
+              </div>
+
+              <div className="grid md:grid-cols-3 gap-6">
+                {cards.map((c, i) => (
+                  <div key={i} className={`glass rounded-3xl p-8 card-hover group cursor-pointer hover:shadow-2xl ${c.glow} transition-all duration-300`}>
+                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${c.gradient} flex items-center justify-center text-white mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                      {c.icon}
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3">{c.title}</h3>
+                    <p className="text-gray-400 leading-relaxed mb-6">{c.desc}</p>
+                    <div className="flex flex-wrap gap-2">
+                      {c.tags.map((t,j) => (
+                        <span key={j} className="text-xs font-medium text-gray-300 bg-white/5 border border-white/10 rounded-full px-3 py-1">{t}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // ── Dashboard ──────────────────────────────────────────────────────────
+      function Dashboard() {
+        const [tasks, setTasks] = useState([
+          { id:1, text:'Submit SAT / national exam registration', done:true,  tag:'Exam' },
+          { id:2, text:'Write Common App personal statement',     done:true,  tag:'Essay' },
+          { id:3, text:'Request 2 teacher recommendations',       done:false, tag:'Rec' },
+          { id:4, text:'Complete MIT supplemental essay',         done:false, tag:'Essay' },
+          { id:5, text:'Finalize college list (12 schools)',       done:false, tag:'Planning' },
+          { id:6, text:'Register for AP / A-Level exams',         done:false, tag:'Exam' },
+          { id:7, text:'Build portfolio project #1',              done:false, tag:'Portfolio' },
+        ]);
+
+        const [progress, setProgress] = useState(0);
+        const [streakVisible, setStreakVisible] = useState(false);
+
+        useEffect(() => {
+          const t1 = setTimeout(() => setProgress(68), 350);
+          const t2 = setTimeout(() => setStreakVisible(true), 700);
+          return () => { clearTimeout(t1); clearTimeout(t2); };
+        }, []);
+
+        const toggle = (id) => setTasks(prev => prev.map(t => t.id === id ? {...t, done:!t.done} : t));
+        const doneCount  = tasks.filter(t => t.done).length;
+        const donePct    = Math.round((doneCount / tasks.length) * 100);
+
+        const timeline = [
+          { month:'Apr', label:'Foundation',     items:['SAT Prep starts','Essay outline'],        dot:'bg-indigo-500 shadow-indigo-500/60', active:true  },
+          { month:'May', label:'Exam Season',    items:['AP / A-Level Exams','Draft Essay 1'],      dot:'bg-purple-500 shadow-purple-500/60', active:true  },
+          { month:'Jun', label:'Explore',        items:['Campus visits','Finalise school list'],    dot:'bg-pink-500',   active:false },
+          { month:'Jul', label:'Polish',         items:['Essay revisions','Request recs'],          dot:'bg-orange-500', active:false },
+          { month:'Aug', label:'Applications',   items:['Common App opens','Activities list'],      dot:'bg-yellow-500', active:false },
+          { month:'Sep', label:'Submit',         items:['Submit EA apps','Scholarship search'],     dot:'bg-green-500',  active:false },
+        ];
+
+        const tagStyle = {
+          Exam:      'text-indigo-300 bg-indigo-500/20 border border-indigo-500/25',
+          Essay:     'text-purple-300 bg-purple-500/20 border border-purple-500/25',
+          Rec:       'text-pink-300   bg-pink-500/20   border border-pink-500/25',
+          Planning:  'text-green-300  bg-green-500/20  border border-green-500/25',
+          Portfolio: 'text-blue-300   bg-blue-500/20   border border-blue-500/25',
+        };
+
+        const schools = [
+          { name:'MIT',                    type:'Reach', fit:91, grad:'from-indigo-500 to-blue-600' },
+          { name:'Stanford',               type:'Reach', fit:87, grad:'from-purple-500 to-violet-600' },
+          { name:'UC Berkeley',            type:'Match', fit:78, grad:'from-blue-500  to-cyan-600' },
+          { name:'University of Michigan', type:'Safety',fit:95, grad:'from-green-500 to-emerald-600' },
+        ];
+
+        return (
+          <section id="dashboard" className="py-28 relative">
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="absolute top-1/4 right-0  w-[500px] h-[500px] bg-purple-600/8  rounded-full blur-3xl" />
+              <div className="absolute bottom-1/4 left-0 w-[400px] h-[400px] bg-indigo-600/8 rounded-full blur-3xl" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-px bg-gradient-to-r from-transparent via-white/8 to-transparent" />
+            </div>
+
+            <div className="relative z-10 max-w-7xl mx-auto px-6">
+              {/* Section header */}
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-4 text-sm text-green-300">
+                  <span className="flex h-2 w-2 rounded-full bg-green-400 animate-pulse" /> Interactive Dashboard Preview
+                </div>
+                <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+                  Your command center<br /><span className="shimmer-text">for college success</span>
+                </h2>
+                <p className="text-gray-400 max-w-xl mx-auto">Everything tracked in one place. Click tasks to mark them done.</p>
+              </div>
+
+              {/* ── Top stat row ── */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-6">
+                {[
+                  { icon:'📋', label:'Tasks Done',  value:`${doneCount}/${tasks.length}`, sub:'this week' },
+                  { icon:'🔥', label:'Day Streak',  value:'14',   sub:'personal best' },
+                  { icon:'📊', label:'GPA (5.0)',    value:'4.6',  sub:'current score' },
+                  { icon:'🎯', label:'Apps Ready',  value:'32%',  sub:'completion' },
+                ].map((s,i) => (
+                  <div key={i} className="glass-strong rounded-2xl p-4 card-hover flex items-center gap-3">
+                    <span className="text-2xl flex-shrink-0">{s.icon}</span>
+                    <div className="min-w-0">
+                      <p className="text-white font-black text-lg leading-none">{s.value}</p>
+                      <p className="text-gray-400 text-xs mt-0.5 truncate">{s.label}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* ── Main grid ── */}
+              <div className="grid lg:grid-cols-3 gap-6">
+
+                {/* Left — 2 cols */}
+                <div className="lg:col-span-2 space-y-6">
+
+                  {/* Progress + Streak */}
+                  <div className="grid sm:grid-cols-2 gap-6">
+
+                    {/* Progress ring card */}
+                    <div className="glass rounded-3xl p-6 card-hover">
+                      <div className="flex items-start justify-between mb-5">
+                        <div>
+                          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Overall Progress</p>
+                          <p className="text-5xl font-black text-white leading-none">{progress}<span className="text-2xl text-gray-500 font-bold">%</span></p>
+                          <p className="text-xs text-gray-500 mt-1">{100-progress}% remaining</p>
+                        </div>
+                        <div className="relative w-20 h-20 flex-shrink-0">
+                          <svg className="w-20 h-20 -rotate-90" viewBox="0 0 80 80">
+                            <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="7"/>
+                            <circle cx="40" cy="40" r="34" fill="none" stroke="url(#progGrad)" strokeWidth="7"
+                              strokeDasharray="213.6"
+                              strokeDashoffset={`${213.6 * (1 - progress/100)}`}
+                              strokeLinecap="round"
+                              style={{transition:'stroke-dashoffset 1.6s cubic-bezier(0.4,0,0.2,1)'}}/>
+                            <defs>
+                              <linearGradient id="progGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%"   stopColor="#6366f1"/>
+                                <stop offset="100%" stopColor="#a855f7"/>
+                              </linearGradient>
+                            </defs>
+                          </svg>
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <span className="text-xs font-bold text-indigo-300">{progress}%</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="w-full bg-white/8 rounded-full h-2.5 overflow-hidden">
+                        <div className="h-2.5 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 progress-bar-fill"
+                          style={{width:`${progress}%`}}/>
+                      </div>
+                      <div className="flex justify-between text-xs text-gray-600 mt-1.5">
+                        <span>0%</span><span>Application season</span><span>100%</span>
+                      </div>
+                    </div>
+
+                    {/* Streak card */}
+                    <div className={`glass rounded-3xl p-6 card-hover relative overflow-hidden transition-all duration-700 ${streakVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+                      <div className="absolute -top-6 -right-6 w-32 h-32 bg-orange-500/10 rounded-full blur-2xl pointer-events-none" />
+                      <div className="flex items-start justify-between mb-4">
+                        <div>
+                          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Study Streak</p>
+                          <div className="flex items-end gap-2">
+                            <span className="text-5xl font-black text-white leading-none">14</span>
+                            <span className="text-orange-400 mb-1"><FireIcon /></span>
+                          </div>
+                        </div>
+                        <div className="glass rounded-xl px-2 py-1 text-xs text-orange-300 font-semibold">🏆 Best</div>
+                      </div>
+                      {/* Bar chart */}
+                      <div className="flex items-end gap-1.5 h-12 mb-3">
+                        {[
+                          {d:'M', h:65, active:true},
+                          {d:'T', h:85, active:true},
+                          {d:'W', h:55, active:true},
+                          {d:'T', h:95, active:true},
+                          {d:'F', h:75, active:true},
+                          {d:'S', h:30, active:false},
+                          {d:'S', h:20, active:false},
+                        ].map((bar,i) => (
+                          <div key={i} className="flex-1 flex flex-col items-center gap-1">
+                            <div className="w-full rounded-md transition-all duration-700"
+                              style={{
+                                height:`${bar.h}%`,
+                                background: bar.active
+                                  ? 'linear-gradient(to top, #f97316, #fbbf24)'
+                                  : 'rgba(255,255,255,0.08)',
+                                minHeight:'4px',
+                              }}/>
+                            <span className="text-[10px] text-gray-600">{bar.d}</span>
+                          </div>
+                        ))}
+                      </div>
+                      <p className="text-xs text-orange-400 font-semibold">Keep going — don't break the chain!</p>
+                    </div>
+                  </div>
+
+                  {/* Task Checklist */}
+                  <div className="glass rounded-3xl p-6 card-hover">
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="text-white font-bold text-lg">Task Checklist</h3>
+                        <p className="text-gray-500 text-sm mt-0.5">{doneCount} of {tasks.length} completed</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <div className="h-1.5 w-24 bg-white/8 rounded-full overflow-hidden">
+                          <div className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-500"
+                            style={{width:`${donePct}%`}}/>
+                        </div>
+                        <span className="text-sm font-bold text-indigo-400 min-w-[36px] text-right">{donePct}%</span>
+                      </div>
+                    </div>
+                    {/* Full progress bar */}
+                    <div className="w-full bg-white/8 rounded-full h-2 mb-5 overflow-hidden">
+                      <div className="h-full rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 transition-all duration-600"
+                        style={{width:`${donePct}%`}}/>
+                    </div>
+                    <div className="space-y-2">
+                      {tasks.map(t => (
+                        <div key={t.id} onClick={() => toggle(t.id)}
+                          className={`flex items-center gap-3 px-4 py-3 rounded-2xl cursor-pointer transition-all duration-200 group border ${t.done ? 'bg-white/4 border-white/5' : 'border-transparent hover:bg-white/5 hover:border-white/8'}`}>
+                          <div className={`flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-all duration-200 ${t.done ? 'bg-gradient-to-br from-indigo-500 to-purple-500' : 'border-2 border-gray-600 group-hover:border-indigo-400'}`}>
+                            {t.done && (
+                              <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3">
+                                <polyline points="20 6 9 17 4 12"/>
+                              </svg>
+                            )}
+                          </div>
+                          <span className={`flex-1 text-sm transition-all duration-200 ${t.done ? 'line-through text-gray-500' : 'text-gray-200 group-hover:text-white'}`}>{t.text}</span>
+                          <span className={`tag-pill flex-shrink-0 ${tagStyle[t.tag] || 'text-gray-400 bg-white/8'}`}>{t.tag}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right column */}
+                <div className="space-y-6">
+
+                  {/* Timeline */}
+                  <div className="glass rounded-3xl p-6 card-hover">
+                    <h3 className="text-white font-bold text-lg mb-6">Monthly Timeline</h3>
+                    <div className="relative">
+                      <div className="absolute left-[18px] top-2 bottom-2 w-px bg-gradient-to-b from-indigo-500 via-purple-500/50 to-transparent" />
+                      <div className="space-y-5">
+                        {timeline.map((m,i) => (
+                          <div key={i} className="relative pl-11">
+                            <div className={`absolute left-3 top-1.5 w-3.5 h-3.5 rounded-full border-2 border-gray-950 transition-all duration-300 ${m.dot} ${m.active ? 'shadow-lg' : ''}`} />
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className={`text-xs font-black uppercase tracking-wider ${m.active ? 'text-white' : 'text-gray-600'}`}>{m.month}</span>
+                              <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${m.active ? 'text-indigo-300 bg-indigo-500/15' : 'text-gray-600 bg-white/5'}`}>{m.label}</span>
+                            </div>
+                            {m.items.map((item,j) => (
+                              <p key={j} className={`text-xs leading-relaxed ${m.active ? 'text-gray-300' : 'text-gray-600'}`}>· {item}</p>
+                            ))}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* School list */}
+                  <div className="glass rounded-3xl p-6 card-hover">
+                    <div className="flex items-center justify-between mb-5">
+                      <h3 className="text-white font-bold text-lg">School List</h3>
+                      <span className="text-xs text-gray-500">4 schools</span>
+                    </div>
+                    <div className="space-y-4">
+                      {schools.map((s,i) => (
+                        <div key={i} className="group">
+                          <div className="flex items-center gap-3 mb-1.5">
+                            <div className={`w-8 h-8 rounded-xl bg-gradient-to-br ${s.grad} flex items-center justify-center text-white text-xs font-black flex-shrink-0 group-hover:scale-105 transition-transform`}>
+                              {s.name.slice(0,2).toUpperCase()}
+                            </div>
+                            <span className="text-sm text-white font-medium flex-1 truncate">{s.name}</span>
+                            <span className={`tag-pill ${s.type==='Reach'?'text-orange-300 bg-orange-500/20 border-orange-500/25':s.type==='Match'?'text-blue-300 bg-blue-500/20 border-blue-500/25':'text-green-300 bg-green-500/20 border-green-500/25'}`}>
+                              {s.type}
+                            </span>
+                          </div>
+                          <div className="flex items-center gap-2 pl-11">
+                            <div className="flex-1 bg-white/8 rounded-full h-1.5 overflow-hidden">
+                              <div className={`h-full rounded-full bg-gradient-to-r ${s.grad} transition-all duration-1000`} style={{width:`${s.fit}%`}}/>
+                            </div>
+                            <span className="text-xs text-gray-500 w-8 text-right">{s.fit}%</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // ── CTA Banner ─────────────────────────────────────────────────────────
+      function CTABanner({ onCTA }) {
+        return (
+          <section className="py-24 relative overflow-hidden">
+            <div className="max-w-4xl mx-auto px-6">
+              <div className="relative glass rounded-3xl p-12 text-center overflow-hidden">
+                <div className="absolute -top-20 -left-20 w-64 h-64 bg-indigo-600/30 rounded-full blur-3xl" />
+                <div className="absolute -bottom-20 -right-20 w-64 h-64 bg-purple-600/30 rounded-full blur-3xl" />
+                <div className="relative z-10">
+                  <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-6 text-sm text-indigo-300">
+                    <SparkleIcon /> Start your journey today
+                  </div>
+                  <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+                    Ready to build your<br /><span className="shimmer-text">winning roadmap?</span>
+                  </h2>
+                  <p className="text-gray-400 text-lg mb-8 max-w-xl mx-auto">
+                    Join thousands of students who used PathPilot AI to get into their dream universities.
+                  </p>
+                  <button
+                    onClick={onCTA}
+                    className="group relative overflow-hidden inline-flex items-center gap-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold text-lg px-10 py-4 rounded-2xl transition-all duration-300 hover:shadow-2xl hover:shadow-indigo-500/40 hover:scale-105"
+                  >
+                    <SparkleIcon />
+                    Generate My Roadmap — It's Free
+                    <ArrowIcon />
+                    <div className="absolute inset-0 bg-white/10 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-500 skew-x-12" />
+                  </button>
+                  <p className="text-gray-500 text-sm mt-4">No credit card required · Free forever plan available</p>
+                </div>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // ── Why Students Love PathPilot ────────────────────────────────────────
+      function WhyStudentsLove({ onCTA }) {
+        const benefits = [
+          {
+            icon: '🗺️',
+            gradient: 'from-indigo-500/15 to-blue-500/15',
+            border: 'border-indigo-500/25',
+            accent: 'bg-indigo-500',
+            badge: 'AI-powered',
+            badgeColor: 'text-indigo-300 bg-indigo-500/15 border border-indigo-500/25',
+            title: 'Personalized University Roadmap',
+            desc: 'Get a step-by-step academic plan built specifically around your major, target country, GPA, English level, and timeline. No generic advice — only what applies to you.',
+            highlights: [
+              'Tailored to your chosen major and country',
+              'Month-by-month milestones and deadlines',
+              'Country-specific exam and application guidance',
+            ],
+            stat: { value: '12+', label: 'Supported countries' },
+          },
+          {
+            icon: '⚡',
+            gradient: 'from-green-500/15 to-emerald-500/15',
+            border: 'border-green-500/25',
+            accent: 'bg-green-500',
+            badge: 'Always free',
+            badgeColor: 'text-green-300 bg-green-500/15 border border-green-500/25',
+            title: 'Free AI-Powered Planning',
+            desc: 'PathPilot AI works like a personal college counselor — available 24/7, completely free. Generate unlimited roadmaps, explore different majors, and plan your entire application journey at no cost.',
+            highlights: [
+              'No subscription or credit card required',
+              'Unlimited roadmap generations',
+              'Portfolio project ideas per major',
+            ],
+            stat: { value: '100%', label: 'Free, always' },
+          },
+          {
+            icon: '📊',
+            gradient: 'from-purple-500/15 to-pink-500/15',
+            border: 'border-purple-500/25',
+            accent: 'bg-purple-500',
+            badge: 'Built-in tracker',
+            badgeColor: 'text-purple-300 bg-purple-500/15 border border-purple-500/25',
+            title: 'Progress Tracking Dashboard',
+            desc: 'Stay on track with an interactive dashboard that shows your overall completion, streak counter, task checklists, and a visual timeline — so you always know exactly where you stand.',
+            highlights: [
+              'Interactive task checklist per phase',
+              'Real-time completion percentage',
+              'Weekly action plan with priorities',
+            ],
+            stat: { value: '6', label: 'Roadmap sections' },
+          },
+        ];
+
+        return (
+          <section id="why-us" className="py-24 relative overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-px bg-gradient-to-r from-transparent via-indigo-500/40 to-transparent" />
+              <div className="absolute -top-32 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl" />
+              <div className="absolute -bottom-32 right-1/4 w-96 h-96 bg-purple-600/10 rounded-full blur-3xl" />
+            </div>
+
+            <div className="relative z-10 max-w-7xl mx-auto px-6">
+              {/* Header */}
+              <div className="text-center mb-16">
+                <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-4 text-sm text-indigo-300">
+                  <SparkleIcon /> What makes PathPilot different
+                </div>
+                <h2 className="text-4xl md:text-5xl font-black text-white mb-4">
+                  Key <span className="shimmer-text">Benefits</span>
+                </h2>
+                <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+                  Everything a student needs to plan, build, and execute a winning university application — in one free tool.
+                </p>
+              </div>
+
+              {/* Benefit Cards */}
+              <div className="grid md:grid-cols-3 gap-6 mb-10">
+                {benefits.map((b, i) => (
+                  <div key={i} className={`relative rounded-3xl p-8 border bg-gradient-to-br ${b.gradient} ${b.border} card-hover flex flex-col`}>
+                    {/* Top row */}
+                    <div className="flex items-start justify-between mb-6">
+                      <div className="w-14 h-14 rounded-2xl glass flex items-center justify-center text-3xl">
+                        {b.icon}
+                      </div>
+                      <span className={`text-xs font-semibold px-3 py-1 rounded-full ${b.badgeColor}`}>{b.badge}</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-3 leading-snug">{b.title}</h3>
+                    <p className="text-gray-400 text-sm leading-relaxed mb-6 flex-1">{b.desc}</p>
+                    {/* Highlights */}
+                    <div className="space-y-2.5 mb-6">
+                      {b.highlights.map((h, j) => (
+                        <div key={j} className="flex items-center gap-2.5 text-sm text-gray-300">
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-green-400 flex-shrink-0">
+                            <polyline points="20 6 9 17 4 12"/>
+                          </svg>
+                          {h}
+                        </div>
+                      ))}
+                    </div>
+                    {/* Stat chip */}
+                    <div className={`self-start flex items-center gap-2 rounded-xl px-4 py-2 ${b.gradient} border ${b.border}`}>
+                      <span className="text-white font-black text-lg">{b.stat.value}</span>
+                      <span className="text-gray-400 text-xs">{b.stat.label}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA strip */}
+              <div className="flex flex-col sm:flex-row items-center justify-between glass rounded-3xl px-8 py-6 gap-4">
+                <div>
+                  <p className="text-white font-bold text-lg">Ready to start? It's completely free.</p>
+                  <p className="text-gray-400 text-sm">No account needed — generate your first roadmap in 2 minutes.</p>
+                </div>
+                <button onClick={onCTA}
+                  className="flex-shrink-0 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold px-8 py-3.5 rounded-2xl transition-all duration-200 hover:shadow-xl hover:shadow-indigo-500/30 btn-active flex items-center gap-2">
+                  <SparkleIcon /> Generate My Roadmap
+                </button>
+              </div>
+            </div>
+          </section>
+        );
+      }
+
+      // ── Privacy Policy Modal ───────────────────────────────────────────────
+      function PrivacyModal({ onClose }) {
+        const [visible, setVisible] = useState(true);
+        const close = () => { setVisible(false); setTimeout(onClose, 260); };
+        return (
+          <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={close} />
+            <div className={`relative w-full max-w-2xl max-h-[88vh] flex flex-col ${visible ? 'modal-enter' : 'modal-exit'}`}
+              style={{background:'linear-gradient(135deg,rgba(17,17,40,.99) 0%,rgba(10,10,30,.99) 100%)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'28px'}}>
+              {/* Sticky header */}
+              <div className="flex items-center justify-between px-8 pt-7 pb-5 border-b border-white/5 flex-shrink-0">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white text-sm">🔒</div>
+                  <div>
+                    <h2 className="text-white font-bold text-lg">Privacy Policy</h2>
+                    <p className="text-gray-500 text-xs">Last updated: April 2025</p>
+                  </div>
+                </div>
+                <button onClick={close} className="w-9 h-9 flex items-center justify-center rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-all text-lg">✕</button>
+              </div>
+              {/* Scrollable body */}
+              <div className="flex-1 overflow-y-auto px-8 py-7 space-y-8 text-sm text-gray-300 leading-relaxed">
+                <div className="glass rounded-2xl p-5 border-l-4 border-indigo-500">
+                  <p className="text-white font-semibold mb-1">Our commitment to you</p>
+                  <p className="text-gray-400">PathPilot AI is a free educational tool built to help students plan their university journey. We are committed to protecting your privacy and being fully transparent about how your information is used.</p>
+                </div>
+
+                {[
+                  {
+                    title: '1. Information We Collect',
+                    icon: '📋',
+                    content: [
+                      'When you use the roadmap generator, we collect the inputs you voluntarily provide: name, age, grade, target country, intended major, GPA, English level, skills, and timeline.',
+                      'This information is processed entirely within your browser session. PathPilot AI does not currently operate a backend server or database — your data is not transmitted to or stored on any external server.',
+                      'We may collect anonymous, aggregated usage data (such as page visits) to improve the product.',
+                    ],
+                  },
+                  {
+                    title: '2. How We Use Your Information',
+                    icon: '🎯',
+                    content: [
+                      'Your inputs are used solely to generate a personalized academic roadmap displayed to you in the same browser session.',
+                      'We do not use your personal information for advertising, profiling, or any purpose other than providing the roadmap generation service.',
+                      'No automated decision-making or profiling that produces legal or significant effects is performed.',
+                    ],
+                  },
+                  {
+                    title: '3. Data Storage & Security',
+                    icon: '🔐',
+                    content: [
+                      'All roadmap data is generated and displayed locally in your browser. When you close or refresh the page, the data is cleared.',
+                      'We do not store your name, GPA, academic details, or any personally identifiable information on our servers.',
+                      'Standard HTTPS encryption protects data in transit. We apply industry-standard security practices for any infrastructure we operate.',
+                    ],
+                  },
+                  {
+                    title: '4. No Sale of Personal Data',
+                    icon: '🚫',
+                    content: [
+                      'PathPilot AI does not sell, rent, trade, or otherwise transfer your personal information to third parties — ever.',
+                      'We do not share your data with advertisers, data brokers, or marketing companies.',
+                      'If we ever introduce third-party integrations (e.g., analytics), they will be disclosed clearly and will not receive personally identifiable information.',
+                    ],
+                  },
+                  {
+                    title: '5. Educational Use Disclaimer',
+                    icon: '🎓',
+                    content: [
+                      'PathPilot AI is an educational planning tool intended for informational purposes only. The roadmaps, suggestions, and timelines generated are advisory in nature.',
+                      'We are not a licensed educational counselor, admissions consultant, or legal advisor. The content generated does not constitute professional academic or legal advice.',
+                      'University admission requirements change frequently. Always verify information directly with the institutions you are applying to.',
+                    ],
+                  },
+                  {
+                    title: '6. Your Rights',
+                    icon: '⚖️',
+                    content: [
+                      'Since we do not store personal data on servers, there is nothing to delete or retrieve. Closing your browser tab removes all session data.',
+                      'If you have questions about data that may have been collected through analytics or cookies, you may contact us at the address below.',
+                      'Users in the EU/EEA have rights under GDPR. Users in California have rights under CCPA. We honor these rights to the extent applicable.',
+                    ],
+                  },
+                  {
+                    title: '7. Contact Us',
+                    icon: '✉️',
+                    content: [
+                      'If you have any questions, concerns, or requests regarding this Privacy Policy or your data, please contact us:',
+                    ],
+                    contact: true,
+                  },
+                ].map((section,i) => (
+                  <div key={i}>
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-xl">{section.icon}</span>
+                      <h3 className="text-white font-bold">{section.title}</h3>
+                    </div>
+                    <div className="space-y-2 pl-8">
+                      {section.content.map((p,j) => (
+                        <p key={j} className="text-gray-400">{p}</p>
+                      ))}
+                      {section.contact && (
+                        <div className="glass rounded-2xl p-4 mt-3 space-y-2">
+                          <div className="flex items-center gap-3">
+                            <span className="text-indigo-400">📧</span>
+                            <a href="mailto:kairatsanjar@mail.ru" className="text-indigo-300 hover:text-white transition-colors font-medium">kairatsanjar@mail.ru</a>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className="text-indigo-400">📞</span>
+                            <a href="tel:+77761266088" className="text-indigo-300 hover:text-white transition-colors font-medium">+7 776 126 6088</a>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="px-8 pb-6 pt-4 border-t border-white/5 flex-shrink-0">
+                <button onClick={close} className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-3.5 rounded-2xl transition-all duration-200 btn-active">
+                  I Understand — Close
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      // ── Terms of Service Modal ─────────────────────────────────────────────
+      function TermsModal({ onClose }) {
+        const [visible, setVisible] = useState(true);
+        const close = () => { setVisible(false); setTimeout(onClose, 260); };
+        return (
+          <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ${visible ? 'opacity-100' : 'opacity-0'}`}>
+            <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={close} />
+            <div className={`relative w-full max-w-2xl max-h-[88vh] flex flex-col ${visible ? 'modal-enter' : 'modal-exit'}`}
+              style={{background:'linear-gradient(135deg,rgba(17,17,40,.99) 0%,rgba(10,10,30,.99) 100%)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'28px'}}>
+              <div className="flex items-center justify-between px-8 pt-7 pb-5 border-b border-white/5 flex-shrink-0">
+                <div className="flex items-center gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center text-white text-sm">📜</div>
+                  <div>
+                    <h2 className="text-white font-bold text-lg">Terms of Service</h2>
+                    <p className="text-gray-500 text-xs">Last updated: April 2025</p>
+                  </div>
+                </div>
+                <button onClick={close} className="w-9 h-9 flex items-center justify-center rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-all text-lg">✕</button>
+              </div>
+              <div className="flex-1 overflow-y-auto px-8 py-7 space-y-8 text-sm text-gray-300 leading-relaxed">
+                <div className="glass rounded-2xl p-5 border-l-4 border-purple-500">
+                  <p className="text-white font-semibold mb-1">Welcome to PathPilot AI</p>
+                  <p className="text-gray-400">By using PathPilot AI, you agree to the following terms. Please read them carefully. These terms are designed to be fair and transparent — we are a free student-focused tool.</p>
+                </div>
+
+                {[
+                  {
+                    title: '1. Educational Use Only',
+                    icon: '🎓',
+                    content: [
+                      'PathPilot AI is designed exclusively for educational planning and informational purposes. It is intended to help students organize their university preparation journey.',
+                      'You may not use PathPilot AI for any commercial, unlawful, or harmful purpose.',
+                      'The platform is open to users of all ages; however, users under 13 should have parental permission before using the service.',
+                    ],
+                  },
+                  {
+                    title: '2. Roadmap Suggestions Are Advisory',
+                    icon: '🗺️',
+                    content: [
+                      'All roadmaps, timelines, project suggestions, exam recommendations, and study plans generated by PathPilot AI are advisory and informational only.',
+                      'The suggestions are based on general patterns and publicly available information about university admissions. They do not account for every individual circumstance or institution-specific rule.',
+                      'PathPilot AI is not a substitute for professional academic counseling, legal advice, or official university guidance.',
+                    ],
+                  },
+                  {
+                    title: '3. User Responsibility',
+                    icon: '👤',
+                    content: [
+                      'You are solely responsible for the information you enter into the roadmap generator and for the decisions you make based on the output.',
+                      'You should independently verify all exam dates, application deadlines, university requirements, and admission criteria with the relevant institutions.',
+                      'PathPilot AI is not responsible for any decisions you make — academic, financial, or otherwise — based on the content generated by the platform.',
+                    ],
+                  },
+                  {
+                    title: '4. No Guarantee of Admission',
+                    icon: '⚠️',
+                    content: [
+                      'PathPilot AI does not guarantee, imply, or promise admission to any university, program, or scholarship.',
+                      'University admission depends on a wide range of factors outside our control, including institutional policies, competition, quotas, and individual assessment.',
+                      'Any statistics or success rates shown on this website are illustrative estimates and do not constitute a promise of outcomes.',
+                    ],
+                    highlight: true,
+                  },
+                  {
+                    title: '5. Free Usage Terms',
+                    icon: '🎁',
+                    content: [
+                      'PathPilot AI is currently offered free of charge. We reserve the right to introduce optional premium features in the future, but core roadmap generation will remain free.',
+                      'We may discontinue, modify, or limit access to the service at any time without prior notice.',
+                      'You may not attempt to reverse-engineer, scrape, or commercialize any part of PathPilot AI without written permission.',
+                    ],
+                  },
+                  {
+                    title: '6. Intellectual Property',
+                    icon: '©️',
+                    content: [
+                      'All content, design, and code belonging to PathPilot AI is the intellectual property of its creators.',
+                      'The roadmap content generated for you is yours to use for personal, educational purposes. You may not redistribute or sell generated roadmaps.',
+                    ],
+                  },
+                  {
+                    title: '7. Changes to These Terms',
+                    icon: '🔄',
+                    content: [
+                      'We may update these Terms of Service from time to time. Continued use of PathPilot AI after changes are posted constitutes acceptance of the new terms.',
+                      'We will indicate the date of the last update at the top of this page.',
+                    ],
+                  },
+                  {
+                    title: '8. Contact',
+                    icon: '✉️',
+                    content: ['For questions about these Terms, please contact us:'],
+                    contact: true,
+                  },
+                ].map((section,i) => (
+                  <div key={i}>
+                    <div className="flex items-center gap-2 mb-3">
+                      <span className="text-xl">{section.icon}</span>
+                      <h3 className="text-white font-bold">{section.title}</h3>
+                    </div>
+                    <div className={`space-y-2 pl-8 ${section.highlight ? 'pb-1' : ''}`}>
+                      {section.highlight && (
+                        <div className="glass rounded-xl p-3 border border-yellow-500/30 bg-yellow-500/5 mb-3 flex items-start gap-2">
+                          <span className="text-yellow-400 text-sm mt-0.5">⚠️</span>
+                          <p className="text-yellow-300 text-xs font-medium">Important: Using PathPilot AI does not improve or affect your actual admission chances. Results depend entirely on your own efforts and institutional decisions.</p>
+                        </div>
+                      )}
+                      {section.content.map((p,j) => (
+                        <p key={j} className="text-gray-400">{p}</p>
+                      ))}
+                      {section.contact && (
+                        <div className="glass rounded-2xl p-4 mt-3 space-y-2">
+                          <div className="flex items-center gap-3">
+                            <span className="text-purple-400">📧</span>
+                            <a href="mailto:kairatsanjar@mail.ru" className="text-purple-300 hover:text-white transition-colors font-medium">kairatsanjar@mail.ru</a>
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className="text-purple-400">📞</span>
+                            <a href="tel:+77761266088" className="text-purple-300 hover:text-white transition-colors font-medium">+7 776 126 6088</a>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div className="px-8 pb-6 pt-4 border-t border-white/5 flex-shrink-0">
+                <button onClick={close} className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white font-bold py-3.5 rounded-2xl transition-all duration-200 btn-active">
+                  I Agree — Close
+                </button>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      // ── Footer ─────────────────────────────────────────────────────────────
+      function Footer({ onPrivacy, onTerms }) {
+        return (
+          <footer id="contact" className="border-t border-white/5 pt-16 pb-8">
+            <div className="max-w-7xl mx-auto px-6">
+              {/* Main footer grid */}
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
+
+                {/* Brand column */}
+                <div className="md:col-span-2">
+                  <div className="flex items-center gap-2 mb-4">
+                    <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                      <SparkleIcon />
+                    </div>
+                    <span className="text-white font-bold text-xl tracking-tight">PathPilot <span className="text-indigo-400">AI</span></span>
+                  </div>
+                  <p className="text-gray-400 text-sm leading-relaxed max-w-xs mb-6">
+                    Your AI-powered guide to university admissions. Free, personalized, and built for ambitious teenagers ready to shape their future.
+                  </p>
+                  {/* Contact info */}
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 group">
+                      <div className="w-8 h-8 rounded-lg glass flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-500/20 transition-all">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-indigo-400">
+                          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+                        </svg>
+                      </div>
+                      <a href="mailto:kairatsanjar@mail.ru" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">kairatsanjar@mail.ru</a>
+                    </div>
+                    <div className="flex items-center gap-3 group">
+                      <div className="w-8 h-8 rounded-lg glass flex items-center justify-center flex-shrink-0 group-hover:bg-indigo-500/20 transition-all">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4 text-indigo-400">
+                          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13 19.79 19.79 0 0 1 1.61 4.38 2 2 0 0 1 3.58 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.1 6.1l1.97-1.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/>
+                        </svg>
+                      </div>
+                      <a href="tel:+77761266088" className="text-gray-400 hover:text-white transition-colors text-sm font-medium">+7 776 126 6088</a>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Quick links */}
+                <div>
+                  <p className="text-white font-semibold text-sm mb-5 uppercase tracking-wider">Navigate</p>
+                  <div className="space-y-3">
+                    {[
+                      {label:'Home', href:'#'},
+                      {label:'Features', href:'#features'},
+                      {label:'Dashboard', href:'#dashboard'},
+                      {label:'Why Us', href:'#why-us'},
+                    ].map((link,i) => (
+                      <a key={i} href={link.href} className="block text-gray-400 hover:text-white transition-colors text-sm hover:translate-x-1 transform duration-200">{link.label}</a>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Legal links */}
+                <div>
+                  <p className="text-white font-semibold text-sm mb-5 uppercase tracking-wider">Legal & Support</p>
+                  <div className="space-y-3">
+                    <button onClick={onPrivacy} className="block text-gray-400 hover:text-white transition-colors text-sm hover:translate-x-1 transform duration-200 text-left">Privacy Policy</button>
+                    <button onClick={onTerms}   className="block text-gray-400 hover:text-white transition-colors text-sm hover:translate-x-1 transform duration-200 text-left">Terms of Service</button>
+                    <a href="mailto:kairatsanjar@mail.ru" className="block text-gray-400 hover:text-white transition-colors text-sm hover:translate-x-1 transform duration-200">Contact Support</a>
+                    <a href="mailto:kairatsanjar@mail.ru" className="block text-gray-400 hover:text-white transition-colors text-sm hover:translate-x-1 transform duration-200">Report an Issue</a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Divider */}
+              <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent mb-6" />
+
+              {/* Bottom bar */}
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <p className="text-gray-600 text-xs">© 2025 PathPilot AI. All rights reserved. Built to empower every student's path.</p>
+                <div className="flex items-center gap-5 text-xs text-gray-600">
+                  <button onClick={onPrivacy} className="hover:text-gray-400 transition-colors">Privacy</button>
+                  <button onClick={onTerms}   className="hover:text-gray-400 transition-colors">Terms</button>
+                  <span className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+                    All systems operational
+                  </span>
+                </div>
+              </div>
+            </div>
+          </footer>
+        );
+      }
+
+      // ── Roadmap Generation Engine ──────────────────────────────────────────
+      const MAJOR_DATA = {
+        'Computer Science': {
+          color: 'indigo',
+          projects: [
+            { title: 'Personal Portfolio Website', desc: 'Build a responsive site with HTML/CSS/JS showcasing your work. Deploy on GitHub Pages.', difficulty: 'Beginner' },
+            { title: 'AI Chatbot (Rule-based)', desc: 'Create a simple chatbot using Python or JavaScript with decision trees and keyword matching.', difficulty: 'Intermediate' },
+            { title: 'Full-Stack Web App', desc: 'Build a task manager or blog with React + Node.js, backed by a real database.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Master data structures & algorithms', 'Complete AP Computer Science or equivalent', 'Score 750+ in SAT Math', 'Learn one core language deeply (Python or Java)'],
+          extracurriculars: ['USACO / IOI competitive programming', 'Open-source GitHub contributions', 'Start a coding club at school', 'Participate in hackathons (MLH, Devpost)'],
+        },
+        'Medicine / Pre-Med': {
+          color: 'pink',
+          projects: [
+            { title: 'Health Awareness Blog', desc: 'Write evidence-based articles on public health topics. Build an audience and SEO skills.', difficulty: 'Beginner' },
+            { title: 'Disease Data Visualization', desc: 'Use Python (matplotlib/pandas) to analyze and visualize publicly available health datasets.', difficulty: 'Intermediate' },
+            { title: 'Medical Research Paper', desc: 'Partner with a local hospital or professor to co-author a research abstract for submission.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Achieve top scores in Biology & Chemistry', 'Complete AP Biology and AP Chemistry', 'Shadow a doctor (min 50 hours)', 'Prepare for MCAT fundamentals early'],
+          extracurriculars: ['Hospital or clinic volunteering', 'Science Olympiad (biology events)', 'Red Cross / health NGO volunteering', 'Lead a health awareness campaign at school'],
+        },
+        'Business / Economics': {
+          color: 'yellow',
+          projects: [
+            { title: 'Micro-Business Venture', desc: 'Launch a real small business (online store, service, or product). Document revenue and lessons.', difficulty: 'Beginner' },
+            { title: 'Market Research Report', desc: 'Conduct a 10-page industry analysis for a company or sector you find interesting.', difficulty: 'Intermediate' },
+            { title: 'Startup Pitch Deck', desc: 'Build a full investor-ready pitch deck for an original business idea and present it.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Master microeconomics & macroeconomics fundamentals', 'Score 700+ in SAT Evidence-Based Reading', 'Study basic accounting and financial literacy', 'Learn Excel / Google Sheets modeling'],
+          extracurriculars: ['DECA or BPA competitions', 'Start a school entrepreneurship club', 'Junior Achievement or Young Entrepreneurs programs', 'Invest in paper trading / stock simulations'],
+        },
+        'Engineering': {
+          color: 'orange',
+          projects: [
+            { title: 'Arduino / Raspberry Pi Project', desc: 'Build a hardware project like a weather station, smart home device, or robotics arm.', difficulty: 'Beginner' },
+            { title: 'CAD Design Portfolio', desc: 'Design 5+ 3D models using Fusion 360 or SolidWorks. Document the engineering process.', difficulty: 'Intermediate' },
+            { title: 'Science Fair Research Project', desc: 'Conduct an original experiment in physics, chemistry, or materials science for competition.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Excel in Physics and advanced Math (Calculus)', 'Score 780+ in SAT Math', 'Complete AP Physics and AP Calculus', 'Learn CAD tools (AutoCAD or Fusion 360)'],
+          extracurriculars: ['FIRST Robotics Competition (FRC)', 'Science Olympiad (engineering events)', 'Math Olympiad (AMC/AIME)', 'Volunteer to tutor physics or math'],
+        },
+        'Law / Political Science': {
+          color: 'blue',
+          projects: [
+            { title: 'Opinion Editorial Column', desc: 'Write monthly op-eds on policy or legal issues for your school paper or a local publication.', difficulty: 'Beginner' },
+            { title: 'Model United Nations Leadership', desc: 'Lead MUN conferences as Secretary General or chair panels on international law.', difficulty: 'Intermediate' },
+            { title: 'Constitutional Law Essay', desc: 'Submit a legal essay to the American Bar Association or similar youth law competition.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Master essay writing and argumentation', 'Score 750+ in SAT Critical Reading', 'Study AP Government / AP US History', 'Read landmark Supreme Court cases'],
+          extracurriculars: ['Debate team (state-level competitions)', 'Model United Nations (MUN)', 'Intern at a local law office or city council', 'Youth legislature or mock trial'],
+        },
+        'Arts / Design': {
+          color: 'purple',
+          projects: [
+            { title: 'Design Portfolio (20 pieces)', desc: 'Curate a diverse portfolio with branding, typography, and UI work. Use Figma or Adobe Suite.', difficulty: 'Beginner' },
+            { title: 'Brand Identity Project', desc: 'Design a complete brand for a fictional or real local business: logo, color system, mockups.', difficulty: 'Intermediate' },
+            { title: 'Social Impact Design Campaign', desc: 'Create a design campaign addressing a real social issue. Submit to design competitions.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Develop technical skills in Adobe CC or Figma', 'Study art history and design theory', 'Maintain a daily creative sketchbook', 'Complete AP Art or AP Studio Art'],
+          extracurriculars: ['Submit to YoungArts or Scholastic Art Awards', 'Design posters/branding for school clubs', 'Attend summer design or art intensives', 'Freelance small design projects'],
+        },
+      };
+
+      const COUNTRY_DATA = {
+        'USA': {
+          exams: ['SAT (target 1400+)', 'ACT (target 32+)', 'AP exams (aim for 4-5)', 'TOEFL 100+ or IELTS 7.0+'],
+          timeline: ['Aug–Oct: Common App opens, essays due', 'Nov 1: Early Action/Decision deadlines', 'Jan 1: Regular Decision deadline', 'Mar–Apr: Decisions released'],
+          tips: 'Focus heavily on extracurricular depth and leadership. Quality over quantity. Demonstrated interest matters.',
+        },
+        'UK': {
+          exams: ['UCAS application (5 choices)', 'A-Levels or IB Diploma', 'IELTS 7.0+ (most universities)', 'UKCAT/BMAT for Medicine/Dentistry'],
+          timeline: ['Sep–Oct: UCAS opens, write personal statement', 'Oct 15: Oxbridge/Medicine deadline', 'Jan 15: Main UCAS deadline', 'May–Jun: Firm & Insurance choices'],
+          tips: 'Personal statement is critical — one essay for all 5 universities. Show intellectual curiosity and subject passion.',
+        },
+        'Canada': {
+          exams: ['SAT/ACT (optional at many schools)', 'Provincial exams (varies by province)', 'IELTS 6.5+ / TOEFL 90+', 'Strong GPA is primary factor'],
+          timeline: ['Oct–Nov: Applications open', 'Jan–Feb: Most deadlines', 'Mar–Apr: Admission offers', 'May 1–Jun 1: Accept offers'],
+          tips: 'GPA is the most important factor at Canadian universities. Community involvement and awards help differentiation.',
+        },
+        'Germany': {
+          exams: ['TestDaF or DSH (German proficiency)', 'IELTS 6.0+ for English-taught programs', 'Uni-Assist application platform', 'Numerus Clausus (NC) GPA threshold'],
+          timeline: ['Jan 15: Winter semester applications', 'Jul 15: Summer semester applications', 'Oct/Apr: Semesters start', 'Blocked account: €11,208/year proof'],
+          tips: 'Most public universities are tuition-free. Blocked bank account and language certificate are mandatory for visa.',
+        },
+        'Australia': {
+          exams: ['IELTS 6.5–7.0+ / TOEFL 79–94+', 'ATAR or equivalent score', 'UAC / VTAC / QTAC applications', 'Some programs need GAMSAT/UCAT'],
+          timeline: ['Aug–Sep: Applications open', 'Sep–Nov: Main application period', 'Dec–Jan: Offers released', 'Feb/Jul: Semester start dates'],
+          tips: 'Strong ATAR and English scores drive admission. Student visa requires financial proof (~AU$21,041/year).',
+        },
+        'Other': {
+          exams: ['IELTS 6.5+ or TOEFL 90+', 'Country-specific standardized tests', 'Transcripts with certified translations', 'Letters of recommendation (2–3)'],
+          timeline: ['Research each school\'s deadlines', '12–18 months ahead: start applications', 'Check scholarship deadlines (often earlier)', 'Apply for student visa 3–6 months before'],
+          tips: 'Research each country\'s specific requirements. Start early, especially for visa and financial proof documentation.',
+        },
+      };
+
+      const ENGLISH_TASKS = {
+        'Beginner': [
+          'Join an English-speaking online community (Reddit, Discord)',
+          'Watch 1 English YouTube video/day with subtitles',
+          'Learn 10 new academic vocabulary words per week',
+          'Complete Duolingo English daily (30 min)',
+          'Start a simple English journal (3 sentences/day)',
+        ],
+        'Intermediate': [
+          'Read one English news article daily (BBC, Reuters)',
+          'Practice IELTS Academic writing Task 1 & 2 weekly',
+          'Join Toastmasters or English speaking club',
+          'Listen to English podcasts during commute',
+          'Write 1 essay per week and get feedback',
+        ],
+        'Advanced': [
+          'Take IELTS or TOEFL mock tests monthly',
+          'Read academic papers in your intended major',
+          'Record yourself speaking and review for fluency',
+          'Practice IELTS Speaking Part 3 (abstract questions)',
+          'Write university-style essays with thesis arguments',
+        ],
+      };
+
+      function generateRoadmap(f) {
+        const majorKey = Object.keys(MAJOR_DATA).find(k => k.toLowerCase().includes(f.major.toLowerCase())) || 'Computer Science';
+        const countryKey = Object.keys(COUNTRY_DATA).find(k => k.toLowerCase().includes(f.country.toLowerCase())) || 'Other';
+        const englishKey = ['Beginner','Intermediate','Advanced'].includes(f.englishLevel) ? f.englishLevel : 'Intermediate';
+        const major = MAJOR_DATA[majorKey];
+        const country = COUNTRY_DATA[countryKey];
+        const months = parseInt(f.timeline) || 12;
+        const gpa = parseFloat(f.gpa) || 3.5;
+        const gpaNote = gpa < 3.0
+          ? 'GPA needs urgent attention (below 3.0/5.0) — focus on academic recovery before anything else.'
+          : gpa < 3.5
+            ? 'GPA is developing (3.0–3.4/5.0) — target consistent improvement and highlight upward trend.'
+            : gpa < 4.0
+              ? 'Solid GPA (3.5–3.9/5.0) — maintain momentum and strengthen standardized test scores.'
+              : gpa < 4.5
+                ? 'Strong GPA (4.0–4.4/5.0) — leverage this in applications and aim for selective programs.'
+                : 'Excellent GPA (4.5+/5.0) — you are highly competitive; apply to top-tier programs with confidence.';
+
+        // Build month-by-month timeline
+        const phases = [];
+        if (months <= 6) {
+          phases.push({ range: 'Month 1–2', label: 'Foundation', color: 'indigo', tasks: ['Audit current grades and identify weak subjects', 'Set up study schedule (2h focused study/day)', country.exams[0] + ' — register and begin prep', 'Start English improvement plan'] });
+          phases.push({ range: 'Month 3–4', label: 'Build', color: 'purple', tasks: ['Begin Portfolio Project #1: ' + major.projects[0].title, 'Join 1 extracurricular from your list', 'Draft your personal statement outline', 'First mock exam — assess gaps'] });
+          phases.push({ range: 'Month 5–6', label: 'Launch', color: 'pink', tasks: ['Finalize and submit applications', 'Complete Portfolio Project #2', 'Request letters of recommendation', country.timeline[0]] });
+        } else if (months <= 9) {
+          phases.push({ range: 'Month 1–3', label: 'Foundation', color: 'indigo', tasks: ['Deep-dive into academic weak spots', 'Register for ' + country.exams[0], 'Start English level-up plan', 'Research target universities in ' + (f.country || 'your target country')] });
+          phases.push({ range: 'Month 4–6', label: 'Build Skills', color: 'purple', tasks: ['Launch Portfolio Project #1: ' + major.projects[0].title, 'Join 2 extracurriculars', 'Take first practice exam', 'Write essay draft #1'] });
+          phases.push({ range: 'Month 7–9', label: 'Apply & Submit', color: 'pink', tasks: ['Complete all application essays', country.timeline[0], 'Request recommendations', 'Finalize college list'] });
+        } else {
+          phases.push({ range: 'Month 1–3', label: 'Discovery & Foundation', color: 'indigo', tasks: ['Self-assessment: subjects, strengths, goals', 'Create daily study routine', 'Register for standardized tests: ' + country.exams[0], 'Begin English plan: ' + ENGLISH_TASKS[englishKey][0]] });
+          phases.push({ range: 'Month 4–6', label: 'Skill Building', color: 'purple', tasks: ['Launch Portfolio Project #1: ' + major.projects[0].title, 'Join extracurricular #1 from your list', 'Take practice/mock exam — review gaps', 'Essay brainstorming sessions (5 story ideas)'] });
+          phases.push({ range: 'Month 7–9', label: 'Momentum', color: 'blue', tasks: ['Start Portfolio Project #2: ' + major.projects[1].title, 'Apply for summer programs or competitions', 'Essay draft #1 complete + get feedback', 'Request teacher recommendations early'] });
+          phases.push({ range: 'Month 10–12', label: 'Application Season', color: 'green', tasks: ['Finalize all application essays', country.timeline[0] || 'Submit applications on time', 'Complete scholarship applications', 'Celebrate milestones — track your streak!'] });
+        }
+
+        // Weekly tasks
+        const weeklyTasks = [
+          { week: 'Week 1–2', tasks: ['Set up study schedule and environment', 'Register for ' + country.exams[0], 'Identify top 3 academic improvement areas', 'Create your PathPilot dashboard habit'] },
+          { week: 'Week 3–4', tasks: ['Complete 2 practice tests', ENGLISH_TASKS[englishKey][0], 'Research 5 universities in ' + (f.country || 'target country'), 'Outline your personal statement'] },
+          { week: 'Week 5–8', tasks: ['Start Portfolio Project: ' + major.projects[0].title, 'Join one extracurricular activity', 'Write essay draft #1 (600 words)', 'Contact potential recommendation writers'] },
+          { week: 'Week 9–12', tasks: ['Review and revise essay with a mentor', 'Complete at least 4 full mock exams', 'Polish Portfolio Project #1', 'Start building your activities list for applications'] },
+        ];
+
+        return {
+          name: f.name,
+          major: majorKey,
+          country: countryKey,
+          englishLevel: englishKey,
+          gpa,
+          gpaNote,
+          timeline: months,
+          academicGoals: [...major.academicGoals, gpaNote],
+          englishGoals: ENGLISH_TASKS[englishKey],
+          projects: major.projects,
+          extracurriculars: major.extracurriculars,
+          countryExams: country.exams,
+          countryTips: country.tips,
+          phases,
+          weeklyTasks,
+          color: major.color,
+        };
+      }
+
+      // ── Roadmap Display ────────────────────────────────────────────────────
+      function RoadmapDisplay({ roadmap, onRegenerate }) {
+        const [taskState, setTaskState] = useState(() => {
+          const init = {};
+          roadmap.phases.forEach((p,pi) => p.tasks.forEach((_,ti) => { init[`p${pi}-${ti}`] = false; }));
+          roadmap.weeklyTasks.forEach((w,wi) => w.tasks.forEach((_,ti) => { init[`w${wi}-${ti}`] = false; }));
+          roadmap.academicGoals.forEach((_,i) => { init[`ag-${i}`] = false; });
+          roadmap.englishGoals.forEach((_,i) => { init[`eg-${i}`] = false; });
+          roadmap.extracurriculars.forEach((_,i) => { init[`ex-${i}`] = false; });
+          return init;
+        });
+
+        const toggle = (key) => setTaskState(s => ({...s, [key]: !s[key]}));
+        const total = Object.keys(taskState).length;
+        const done = Object.values(taskState).filter(Boolean).length;
+        const pct = Math.round((done / total) * 100);
+
+        const colorMap = { indigo:'from-indigo-500 to-blue-500', purple:'from-purple-500 to-pink-500', blue:'from-blue-500 to-cyan-500', green:'from-green-500 to-emerald-500', pink:'from-pink-500 to-rose-500', yellow:'from-yellow-500 to-orange-500', orange:'from-orange-500 to-red-500' };
+        const phaseColors = ['indigo','purple','blue','green'];
+        const diffColor = { Beginner:'text-green-300 bg-green-500/20', Intermediate:'text-yellow-300 bg-yellow-500/20', Advanced:'text-red-300 bg-red-500/20' };
+
+        const SectionHeader = ({ emoji, title, badge }) => (
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-2xl">{emoji}</span>
+            <h3 className="text-xl font-bold text-white">{title}</h3>
+            {badge && <span className="ml-auto text-xs font-semibold text-indigo-300 glass rounded-full px-3 py-1">{badge}</span>}
+          </div>
+        );
+
+        const TaskItem = ({ label, id, tag, tagColor }) => (
+          <div onClick={() => toggle(id)} className={`flex items-start gap-3 p-3 rounded-xl cursor-pointer transition-all duration-200 group ${taskState[id] ? 'bg-white/5' : 'hover:bg-white/5'}`}>
+            <div className={`mt-0.5 flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center transition-all duration-200 ${taskState[id] ? 'bg-gradient-to-br from-indigo-500 to-purple-500 text-white' : 'border-2 border-gray-600 group-hover:border-indigo-400'}`}>
+              {taskState[id] && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-3 h-3"><polyline points="20 6 9 17 4 12"/></svg>}
+            </div>
+            <span className={`flex-1 text-sm leading-relaxed transition-all duration-200 ${taskState[id] ? 'line-through text-gray-500' : 'text-gray-200'}`}>{label}</span>
+            {tag && <span className={`flex-shrink-0 text-xs px-2 py-0.5 rounded-full font-medium ${tagColor || 'text-gray-400 bg-white/10'}`}>{tag}</span>}
+          </div>
+        );
+
+        return (
+          <section id="my-roadmap" className="py-16 relative">
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="absolute top-0 left-1/3 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 right-1/3 w-80 h-80 bg-purple-600/10 rounded-full blur-3xl" />
+            </div>
+            <div className="relative z-10 max-w-7xl mx-auto px-6">
+
+              {/* Header */}
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between mb-12 gap-4">
+                <div>
+                  <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-2 mb-3 text-sm text-green-300">
+                    <span className="flex h-2 w-2 rounded-full bg-green-400 animate-pulse" /> Roadmap Generated
+                  </div>
+                  <h2 className="text-4xl font-black text-white">{roadmap.name}'s <span className="shimmer-text">Personalized Roadmap</span></h2>
+                  <p className="text-gray-400 mt-2">{roadmap.major} · {roadmap.country} · {roadmap.timeline}-month plan</p>
+                </div>
+                <button onClick={onRegenerate} className="glass hover:bg-white/10 text-gray-300 hover:text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-2">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.95"/></svg>
+                  Regenerate
+                </button>
+              </div>
+
+              {/* Progress Overview */}
+              <div className="glass rounded-3xl p-8 mb-8 card-hover">
+                <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-white font-bold text-lg">Overall Completion</span>
+                      <span className="text-3xl font-black text-white">{pct}%</span>
+                    </div>
+                    <div className="w-full bg-white/10 rounded-full h-3 mb-3">
+                      <div className={`h-3 rounded-full bg-gradient-to-r ${colorMap[roadmap.color] || colorMap.indigo} progress-bar-fill transition-all duration-700`} style={{width:`${pct}%`}} />
+                    </div>
+                    <p className="text-gray-400 text-sm">{done} of {total} tasks completed · {total - done} remaining</p>
+                  </div>
+                  <div className="flex gap-4 flex-wrap">
+                    {[
+                      {label:'Major', value: roadmap.major, icon:'🎓'},
+                      {label:'Country', value: roadmap.country, icon:'🌍'},
+                      {label:'GPA', value: roadmap.gpa.toFixed(1) + ' / 5.0', icon:'📊'},
+                      {label:'English', value: roadmap.englishLevel, icon:'💬'},
+                    ].map((s,i) => (
+                      <div key={i} className="glass rounded-2xl px-4 py-3 text-center min-w-[90px]">
+                        <div className="text-xl mb-1">{s.icon}</div>
+                        <div className="text-white font-bold text-sm">{s.value}</div>
+                        <div className="text-gray-500 text-xs">{s.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Main Grid */}
+              <div className="grid lg:grid-cols-2 gap-6 mb-6">
+
+                {/* Academic Goals */}
+                <div className="glass rounded-3xl p-6 card-hover">
+                  <SectionHeader emoji="📚" title="Academic Goals" badge={`${roadmap.academicGoals.length} goals`} />
+                  <div className="space-y-1">
+                    {roadmap.academicGoals.map((g,i) => (
+                      <TaskItem key={i} label={g} id={`ag-${i}`} tag={i === roadmap.academicGoals.length - 1 ? 'GPA Note' : null} tagColor="text-blue-300 bg-blue-500/20" />
+                    ))}
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-white/5">
+                    <p className="text-xs text-gray-500 font-medium">Exams for {roadmap.country}:</p>
+                    <div className="flex flex-wrap gap-2 mt-2">
+                      {roadmap.countryExams.map((e,i) => (
+                        <span key={i} className="text-xs text-indigo-300 bg-indigo-500/15 border border-indigo-500/20 rounded-full px-3 py-1">{e}</span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* English Goals */}
+                <div className="glass rounded-3xl p-6 card-hover">
+                  <SectionHeader emoji="💬" title="English Goals" badge={roadmap.englishLevel} />
+                  <div className="space-y-1">
+                    {roadmap.englishGoals.map((g,i) => (
+                      <TaskItem key={i} label={g} id={`eg-${i}`} />
+                    ))}
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-white/5 text-xs text-gray-400 leading-relaxed">
+                    <span className="text-yellow-400 font-semibold">Pro tip: </span>{roadmap.countryTips}
+                  </div>
+                </div>
+              </div>
+
+              {/* Portfolio Projects */}
+              <div className="glass rounded-3xl p-6 mb-6 card-hover">
+                <SectionHeader emoji="🛠️" title="Portfolio Projects" badge="Tailored to your major" />
+                <div className="grid md:grid-cols-3 gap-4">
+                  {roadmap.projects.map((p,i) => (
+                    <div key={i} className={`relative rounded-2xl p-5 border border-white/10 bg-gradient-to-br ${colorMap[roadmap.color] || colorMap.indigo} bg-opacity-5 hover:bg-opacity-10 transition-all duration-200 group`}>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="text-xs font-bold text-white/60 uppercase tracking-wider">Project {i+1}</span>
+                        <span className={`text-xs font-medium px-2 py-0.5 rounded-full ${diffColor[p.difficulty]}`}>{p.difficulty}</span>
+                      </div>
+                      <h4 className="text-white font-bold mb-2 leading-tight">{p.title}</h4>
+                      <p className="text-gray-400 text-sm leading-relaxed">{p.desc}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Extracurriculars */}
+              <div className="glass rounded-3xl p-6 mb-6 card-hover">
+                <SectionHeader emoji="🏆" title="Extracurricular Activities" badge="4 activities" />
+                <div className="grid sm:grid-cols-2 gap-1">
+                  {roadmap.extracurriculars.map((e,i) => (
+                    <TaskItem key={i} label={e} id={`ex-${i}`} />
+                  ))}
+                </div>
+              </div>
+
+              {/* Timeline */}
+              <div className="glass rounded-3xl p-6 mb-6 card-hover">
+                <SectionHeader emoji="📅" title="Month-by-Month Timeline" badge={`${roadmap.timeline} months`} />
+                <div className={`grid gap-4 ${roadmap.phases.length === 3 ? 'md:grid-cols-3' : 'md:grid-cols-4'}`}>
+                  {roadmap.phases.map((phase, pi) => {
+                    const phaseColor = colorMap[phaseColors[pi % phaseColors.length]];
+                    const phaseDone = phase.tasks.filter((_,ti) => taskState[`p${pi}-${ti}`]).length;
+                    return (
+                      <div key={pi} className="relative rounded-2xl p-5 border border-white/10 bg-white/3">
+                        <div className={`inline-block text-xs font-bold px-3 py-1 rounded-full bg-gradient-to-r ${phaseColor} text-white mb-3`}>{phase.range}</div>
+                        <div className="text-white font-semibold mb-3">{phase.label}</div>
+                        <div className="w-full bg-white/10 rounded-full h-1 mb-3">
+                          <div className={`h-1 rounded-full bg-gradient-to-r ${phaseColor} transition-all duration-500`} style={{width:`${(phaseDone/phase.tasks.length)*100}%`}} />
+                        </div>
+                        <div className="space-y-1">
+                          {phase.tasks.map((task, ti) => (
+                            <div key={ti} onClick={() => toggle(`p${pi}-${ti}`)} className={`flex items-start gap-2 text-sm cursor-pointer p-1.5 rounded-lg hover:bg-white/5 transition-all group`}>
+                              <div className={`mt-0.5 flex-shrink-0 w-4 h-4 rounded-full flex items-center justify-center border transition-all ${taskState[`p${pi}-${ti}`] ? `bg-gradient-to-br ${phaseColor} border-transparent` : 'border-gray-600 group-hover:border-indigo-400'}`}>
+                                {taskState[`p${pi}-${ti}`] && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-2.5 h-2.5 text-white"><polyline points="20 6 9 17 4 12"/></svg>}
+                              </div>
+                              <span className={`leading-snug ${taskState[`p${pi}-${ti}`] ? 'line-through text-gray-500' : 'text-gray-300'}`}>{task}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Weekly Tasks */}
+              <div className="glass rounded-3xl p-6 card-hover">
+                <SectionHeader emoji="📋" title="Weekly Action Plan" badge="First 12 weeks" />
+                <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                  {roadmap.weeklyTasks.map((wk, wi) => (
+                    <div key={wi} className="rounded-2xl p-4 bg-white/3 border border-white/10">
+                      <div className="text-xs font-bold text-purple-400 uppercase tracking-wider mb-3">{wk.week}</div>
+                      <div className="space-y-1">
+                        {wk.tasks.map((task, ti) => (
+                          <TaskItem key={ti} label={task} id={`w${wi}-${ti}`} />
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+            </div>
+          </section>
+        );
+      }
+
+      // ── Demo Modal ─────────────────────────────────────────────────────────
+      const DEMO_STUDENT = {
+        name:'Sophia Chen', age:'17', grade:'Grade 11', country:'USA',
+        major:'Computer Science', gpa:'4.6', englishLevel:'Advanced', timeline:'12', skills:'Python, Figma, Math',
+      };
+      const DEMO_ROADMAP = generateRoadmap ? null : null; // resolved lazily after generateRoadmap is defined
+
+      function DemoModal({ onClose, onCTA }) {
+        const [slide, setSlide] = useState(0);
+        const [genStep, setGenStep] = useState(-1);
+        const [visible, setVisible] = useState(true);
+        const [typed, setTyped] = useState(0); // how many profile rows are "typed in"
+        const totalSlides = 3;
+        const roadmap = generateRoadmap(DEMO_STUDENT);
+
+        const closeModal = () => {
+          setVisible(false);
+          setTimeout(onClose, 260);
+        };
+
+        // Auto-type the profile rows on slide 0
+        useEffect(() => {
+          if (slide !== 0) return;
+          setTyped(0);
+          const profileRows = Object.keys(DEMO_STUDENT).length;
+          let i = 0;
+          const iv = setInterval(() => {
+            i++;
+            setTyped(i);
+            if (i >= profileRows) clearInterval(iv);
+          }, 180);
+          return () => clearInterval(iv);
+        }, [slide]);
+
+        // Auto-run generation steps on slide 1
+        useEffect(() => {
+          if (slide !== 1) return;
+          setGenStep(-1);
+          let i = -1;
+          const iv = setInterval(() => {
+            i++;
+            setGenStep(i);
+            if (i >= 4) { clearInterval(iv); setTimeout(() => setSlide(2), 600); }
+          }, 520);
+          return () => clearInterval(iv);
+        }, [slide]);
+
+        const profileRows = [
+          {label:'Name',    value:DEMO_STUDENT.name,         icon:'👤'},
+          {label:'Age',     value:DEMO_STUDENT.age,          icon:'🎂'},
+          {label:'Grade',   value:DEMO_STUDENT.grade,        icon:'🏫'},
+          {label:'Country', value:DEMO_STUDENT.country,      icon:'🌍'},
+          {label:'Major',   value:DEMO_STUDENT.major,        icon:'💻'},
+          {label:'GPA',     value:DEMO_STUDENT.gpa + ' / 5.0', icon:'📊'},
+          {label:'English', value:DEMO_STUDENT.englishLevel, icon:'💬'},
+          {label:'Timeline',value:DEMO_STUDENT.timeline + ' months', icon:'📅'},
+        ];
+
+        const genLabels = [
+          'Analyzing academic profile…',
+          'Mapping USA university requirements…',
+          'Building Computer Science project ideas…',
+          'Generating month-by-month timeline…',
+          'Creating weekly action tasks…',
+        ];
+
+        const overlayBg = visible ? 'opacity-100' : 'opacity-0';
+        const cardAnim  = visible ? 'modal-enter' : 'modal-exit';
+
+        return (
+          <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ${overlayBg}`}>
+            <div className="absolute inset-0 bg-black/75 backdrop-blur-md" onClick={closeModal} />
+            <div className={`relative w-full max-w-2xl max-h-[92vh] flex flex-col ${cardAnim}`}
+              style={{background:'linear-gradient(135deg,rgba(17,17,40,.98) 0%,rgba(10,10,30,.98) 100%)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'28px'}}>
+
+              {/* Header bar */}
+              <div className="flex items-center justify-between px-7 pt-6 pb-4 border-b border-white/5 flex-shrink-0">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center">
+                    <SparkleIcon />
+                  </div>
+                  <div>
+                    <p className="text-white font-bold text-sm">PathPilot AI — Live Demo</p>
+                    <p className="text-gray-500 text-xs">See how your roadmap gets built</p>
+                  </div>
+                </div>
+                {/* Slide dots */}
+                <div className="hidden sm:flex items-center gap-4">
+                  {['Profile','Generating','Roadmap'].map((label,i) => (
+                    <button key={i} onClick={() => i < slide && setSlide(i)}
+                      className={`flex items-center gap-1.5 text-xs font-medium transition-all ${i === slide ? 'text-indigo-400' : i < slide ? 'text-gray-400 cursor-pointer hover:text-white' : 'text-gray-700 cursor-default'}`}>
+                      <span className={`w-5 h-5 rounded-full flex items-center justify-center text-xs border transition-all ${i === slide ? 'bg-indigo-600 border-indigo-500 text-white' : i < slide ? 'bg-green-600/40 border-green-500/50 text-green-400' : 'border-gray-700 text-gray-700'}`}>
+                        {i < slide ? '✓' : i+1}
+                      </span>
+                      {label}
+                    </button>
+                  ))}
+                </div>
+                <button onClick={closeModal}
+                  className="w-9 h-9 flex items-center justify-center rounded-xl text-gray-400 hover:text-white hover:bg-white/10 transition-all text-lg ml-4">✕</button>
+              </div>
+
+              {/* Slide content — scrollable */}
+              <div className="flex-1 overflow-y-auto px-7 py-6">
+
+                {/* ── Slide 0: Profile ── */}
+                {slide === 0 && (
+                  <div className="demo-slide">
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-500 to-indigo-600 flex items-center justify-center text-white text-lg font-black">SC</div>
+                      <div>
+                        <h3 className="text-white font-bold text-lg">{DEMO_STUDENT.name}</h3>
+                        <p className="text-gray-400 text-sm">Sample student profile</p>
+                      </div>
+                      <span className="ml-auto text-xs text-green-400 bg-green-500/15 border border-green-500/25 rounded-full px-3 py-1 font-medium">Demo</span>
+                    </div>
+                    <div className="grid grid-cols-2 gap-3 mb-6">
+                      {profileRows.map((row,i) => (
+                        <div key={i} className={`flex items-center gap-3 glass rounded-2xl p-3.5 transition-all duration-300 ${i < typed ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}
+                          style={{transitionDelay:`${i*80}ms`}}>
+                          <span className="text-xl">{row.icon}</span>
+                          <div>
+                            <p className="text-gray-500 text-xs mb-0.5">{row.label}</p>
+                            <p className="text-white text-sm font-semibold">{row.value}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <p className="text-gray-400 text-sm text-center mb-2">This is what PathPilot AI reads from your form. Click below to watch the roadmap generate.</p>
+                  </div>
+                )}
+
+                {/* ── Slide 1: Generating ── */}
+                {slide === 1 && (
+                  <div className="demo-slide flex flex-col items-center py-4">
+                    <div className="relative w-20 h-20 mb-6">
+                      <div className="absolute inset-0 rounded-full ring-spin" style={{border:'3px solid transparent',borderTopColor:'#6366f1',borderRightColor:'#a855f7'}} />
+                      <div className="absolute inset-2 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                        <SparkleIcon />
+                      </div>
+                    </div>
+                    <h3 className="text-white font-bold text-xl mb-1">AI is building the roadmap…</h3>
+                    <p className="text-gray-400 text-sm mb-8">Personalizing every section for Sophia</p>
+                    <div className="w-full max-w-sm space-y-3">
+                      {genLabels.map((label,i) => (
+                        <div key={i} className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all duration-400 ${genStep >= i ? 'border-white/10 bg-white/5' : 'border-transparent opacity-30'}`}>
+                          <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${genStep > i ? 'bg-gradient-to-br from-green-500 to-emerald-500' : genStep === i ? 'bg-indigo-600 glow-pulse' : 'bg-white/10'}`}>
+                            {genStep > i
+                              ? <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><polyline points="20 6 9 17 4 12"/></svg>
+                              : genStep === i
+                                ? <span className="w-2.5 h-2.5 rounded-full bg-white animate-pulse" />
+                                : <span className="text-gray-600 text-xs font-bold">{i+1}</span>}
+                          </div>
+                          <span className={`text-sm font-medium ${genStep >= i ? 'text-gray-200' : 'text-gray-600'}`}>{label}</span>
+                          {genStep > i && <span className="ml-auto text-green-400 text-xs">✓</span>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* ── Slide 2: Results preview ── */}
+                {slide === 2 && (
+                  <div className="demo-slide space-y-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="w-8 h-8 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center check-pop">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4"><polyline points="20 6 9 17 4 12"/></svg>
+                      </div>
+                      <div>
+                        <h3 className="text-white font-bold">Sophia's 12-Month Roadmap</h3>
+                        <p className="text-gray-400 text-xs">Computer Science · USA · Advanced English</p>
+                      </div>
+                      <span className="ml-auto text-indigo-400 text-sm font-bold">0% done</span>
+                    </div>
+
+                    {/* Academic Goals */}
+                    <div className="glass rounded-2xl p-5">
+                      <p className="text-xs font-bold text-indigo-400 uppercase tracking-wider mb-3">📚 Academic Goals</p>
+                      <div className="space-y-2">
+                        {roadmap.academicGoals.slice(0,3).map((g,i) => (
+                          <div key={i} className="flex items-center gap-2 text-sm text-gray-300">
+                            <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 flex-shrink-0" />{g}
+                          </div>
+                        ))}
+                        <p className="text-xs text-gray-500">+{roadmap.academicGoals.length - 3} more goals…</p>
+                      </div>
+                    </div>
+
+                    {/* Projects */}
+                    <div className="grid grid-cols-3 gap-3">
+                      {roadmap.projects.map((p,i) => (
+                        <div key={i} className="glass rounded-2xl p-4 border border-indigo-500/15">
+                          <span className="text-xs font-bold text-indigo-400 block mb-2">Project {i+1}</span>
+                          <p className="text-white text-xs font-semibold leading-snug">{p.title}</p>
+                          <span className={`inline-block mt-2 text-xs px-2 py-0.5 rounded-full ${i===0?'text-green-300 bg-green-500/20':i===1?'text-yellow-300 bg-yellow-500/20':'text-red-300 bg-red-500/20'}`}>{p.difficulty}</span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Timeline */}
+                    <div className="glass rounded-2xl p-5">
+                      <p className="text-xs font-bold text-purple-400 uppercase tracking-wider mb-3">📅 Timeline</p>
+                      <div className="space-y-2">
+                        {roadmap.phases.map((ph,i) => (
+                          <div key={i} className="flex items-start gap-3">
+                            <span className={`text-xs font-bold px-2 py-0.5 rounded-full flex-shrink-0 ${['bg-indigo-500/30 text-indigo-300','bg-purple-500/30 text-purple-300','bg-blue-500/30 text-blue-300','bg-green-500/30 text-green-300'][i%4]}`}>{ph.range}</span>
+                            <span className="text-xs text-gray-400">{ph.label} — {ph.tasks[0]}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Weekly highlights */}
+                    <div className="glass rounded-2xl p-5">
+                      <p className="text-xs font-bold text-pink-400 uppercase tracking-wider mb-3">📋 Week 1–2 Tasks</p>
+                      <div className="grid grid-cols-2 gap-1.5">
+                        {roadmap.weeklyTasks[0].tasks.map((t,i) => (
+                          <div key={i} className="flex items-center gap-2 text-xs text-gray-300">
+                            <span className="w-1.5 h-1.5 rounded-full bg-pink-400 flex-shrink-0" />{t}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Footer */}
+              <div className="px-7 pb-6 pt-4 border-t border-white/5 flex-shrink-0 flex items-center gap-3">
+                {slide === 0 && (
+                  <button onClick={() => setSlide(1)}
+                    className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3.5 rounded-2xl hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-200 flex items-center justify-center gap-2 btn-active">
+                    Watch AI Generate <ArrowIcon />
+                  </button>
+                )}
+                {slide === 1 && (
+                  <div className="flex-1 flex items-center justify-center gap-2 text-gray-400 text-sm py-3.5">
+                    <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" /> Auto-advancing…
+                  </div>
+                )}
+                {slide === 2 && (
+                  <>
+                    <button onClick={closeModal}
+                      className="glass hover:bg-white/10 text-gray-300 font-semibold px-5 py-3.5 rounded-2xl transition-all btn-active text-sm">
+                      Close
+                    </button>
+                    <button onClick={() => { closeModal(); setTimeout(onCTA, 280); }}
+                      className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3.5 rounded-2xl hover:shadow-xl hover:shadow-indigo-500/30 transition-all duration-200 flex items-center justify-center gap-2 btn-active">
+                      <SparkleIcon /> Create My Own Roadmap <ArrowIcon />
+                    </button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      // ── Modal ──────────────────────────────────────────────────────────────
+      const STEPS = [
+        {
+          title: "Let's get to know you",
+          fields: [
+            { key:'name', label:'Your Name', placeholder:'e.g. Alex', type:'text' },
+            { key:'age', label:'Your Age', placeholder:'e.g. 16', type:'number' },
+          ],
+        },
+        {
+          title: 'Academic profile',
+          fields: [
+            { key:'grade', label:'Current Grade / Year', placeholder:'e.g. Grade 10 / Year 11', type:'text' },
+            { key:'gpa', label:'Current GPA (out of 5.0)', placeholder:'e.g. 4.2', type:'number' },
+          ],
+        },
+        {
+          title: 'Your goals',
+          fields: [
+            { key:'country', label:'Target Country', placeholder:'e.g. USA, UK, Canada, Germany, Australia', type:'text', hint:'Where do you want to study?' },
+            { key:'major', label:'Intended Major', placeholder:'e.g. Computer Science, Medicine, Business', type:'text' },
+            { key:'timeline', label:'Timeline (months)', placeholder:'e.g. 12', type:'number', hint:'How many months until applications?' },
+          ],
+        },
+        {
+          title: 'Skills & English',
+          fields: [
+            { key:'englishLevel', label:'English Level', placeholder:'Beginner / Intermediate / Advanced', type:'text', hint:'Be honest — this helps calibrate your plan.' },
+            { key:'skills', label:'Your Current Skills', placeholder:'e.g. Python, public speaking, photography', type:'text' },
+          ],
+        },
+      ];
+
+      function Modal({ onClose, onGenerate }) {
+        const [step, setStep] = useState(0);
+        const [answers, setAnswers] = useState({ name:'', age:'', grade:'', gpa:'', country:'', major:'', timeline:'12', englishLevel:'', skills:'' });
+        const [generating, setGenerating] = useState(false);
+        const [genStep, setGenStep] = useState(-1);
+        const [done, setDone] = useState(false);
+        const [visible, setVisible] = useState(true);
+        const totalSteps = STEPS.length;
+
+        const getGenSteps = () => [
+          'Analyzing your academic profile…',
+          'Mapping university requirements for ' + (answers.country || 'your target country') + '…',
+          'Tailoring ' + (answers.major || 'your major') + ' project ideas…',
+          'Building your month-by-month timeline…',
+          'Generating weekly action tasks…',
+        ];
+
+        const handleNext = () => {
+          if (step < totalSteps - 1) { setStep(s => s + 1); return; }
+          setGenerating(true);
+          setGenStep(0);
+          const steps = getGenSteps();
+          let i = 0;
+          const iv = setInterval(() => {
+            i++;
+            setGenStep(i);
+            if (i >= steps.length - 1) {
+              clearInterval(iv);
+              setTimeout(() => { setGenerating(false); setDone(true); }, 700);
+            }
+          }, 480);
+        };
+
+        const closeModal = () => {
+          setVisible(false);
+          setTimeout(onClose, 260);
+        };
+
+        const handleFinish = () => {
+          const roadmap = generateRoadmap(answers);
+          onGenerate(roadmap);
+          closeModal();
+        };
+
+        const updateField = (key, val) => setAnswers(a => ({...a, [key]: val}));
+        const currentFields = STEPS[step].fields;
+        const genSteps = getGenSteps();
+
+        const overlayBg = visible ? 'opacity-100' : 'opacity-0';
+        const cardAnim  = visible ? 'modal-enter' : 'modal-exit';
+
+        return (
+          <div className={`fixed inset-0 z-50 flex items-center justify-center p-4 transition-opacity duration-300 ${overlayBg}`}>
+            <div className="absolute inset-0 bg-black/75 backdrop-blur-md" onClick={e => e.target === e.currentTarget && closeModal()} />
+            <div className={`relative w-full max-w-lg overflow-y-auto max-h-[90vh] ${cardAnim}`}
+              style={{background:'linear-gradient(135deg,rgba(17,17,40,.98) 0%,rgba(10,10,30,.98) 100%)',border:'1px solid rgba(255,255,255,0.1)',borderRadius:'28px',padding:'32px'}}>
+
+              {!done && !generating && (
+                <>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-indigo-400 text-sm font-semibold">Step {step+1} of {totalSteps}</span>
+                    <button onClick={closeModal} className="text-gray-400 hover:text-white w-8 h-8 flex items-center justify-center rounded-xl hover:bg-white/10 transition-all text-lg">✕</button>
+                  </div>
+                  <div className="flex gap-2 mb-6">
+                    {STEPS.map((_,i) => (
+                      <div key={i} onClick={() => i < step && setStep(i)}
+                        className={`h-1.5 rounded-full transition-all duration-400 ${i === step ? 'bg-gradient-to-r from-indigo-500 to-purple-500 flex-1' : i < step ? 'bg-purple-600/60 w-8 cursor-pointer hover:bg-purple-500/80' : 'bg-white/10 w-8'}`} />
+                    ))}
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-1">{STEPS[step].title}</h3>
+                  <p className="text-gray-500 text-sm mb-6">Fill in your details to personalize your roadmap</p>
+                  <div className="space-y-4 mb-6">
+                    {currentFields.map(field => (
+                      <div key={field.key}>
+                        <label className="block text-sm font-semibold text-gray-300 mb-2">{field.label}</label>
+                        <input
+                          type={field.type}
+                          placeholder={field.placeholder}
+                          value={answers[field.key]}
+                          onChange={e => updateField(field.key, e.target.value)}
+                          onKeyDown={e => e.key === 'Enter' && handleNext()}
+                          className="w-full rounded-2xl px-5 py-3.5 text-white placeholder-gray-600 focus:outline-none transition-all text-sm"
+                          style={{background:'rgba(255,255,255,0.06)',border:'1px solid rgba(255,255,255,0.1)'}}
+                          onFocus={e => { e.target.style.borderColor='rgba(99,102,241,0.6)'; e.target.style.background='rgba(99,102,241,0.08)'; }}
+                          onBlur={e => { e.target.style.borderColor='rgba(255,255,255,0.1)'; e.target.style.background='rgba(255,255,255,0.06)'; }}
+                        />
+                        {field.hint && <p className="text-xs text-gray-500 mt-1.5 ml-1">{field.hint}</p>}
+                      </div>
+                    ))}
+                  </div>
+                  <div className="flex gap-3">
+                    {step > 0 && (
+                      <button onClick={() => setStep(s => s-1)}
+                        className="glass hover:bg-white/10 text-gray-300 hover:text-white font-semibold px-5 py-3.5 rounded-2xl transition-all duration-200 btn-active">
+                        ← Back
+                      </button>
+                    )}
+                    <button onClick={handleNext}
+                      className="flex-1 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-bold py-3.5 rounded-2xl hover:shadow-xl hover:shadow-indigo-500/30 hover:from-indigo-500 hover:to-purple-500 transition-all duration-200 flex items-center justify-center gap-2 btn-active">
+                      {step < totalSteps - 1 ? 'Continue' : 'Generate My Roadmap'} <ArrowIcon />
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {generating && (
+                <div className="py-6">
+                  <div className="relative w-20 h-20 mx-auto mb-6">
+                    <div className="absolute inset-0 rounded-full ring-spin" style={{border:'3px solid transparent',borderTopColor:'#6366f1',borderRightColor:'#a855f7'}} />
+                    <div className="absolute inset-2 rounded-full bg-gradient-to-br from-indigo-600 to-purple-600 flex items-center justify-center">
+                      <SparkleIcon />
+                    </div>
+                  </div>
+                  <h3 className="text-xl font-bold text-white text-center mb-1">Building your roadmap…</h3>
+                  <p className="text-gray-400 text-center text-sm mb-7">Personalizing every section just for you</p>
+                  <div className="space-y-2.5">
+                    {genSteps.map((t,i) => (
+                      <div key={i} className={`flex items-center gap-3 p-3.5 rounded-2xl border transition-all duration-400 ${genStep >= i ? 'border-white/10 bg-white/5' : 'border-transparent opacity-25'}`}>
+                        <div className={`w-7 h-7 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-300 ${genStep > i ? 'bg-gradient-to-br from-green-500 to-emerald-500' : genStep === i ? 'bg-indigo-600 glow-pulse' : 'bg-white/10'}`}>
+                          {genStep > i
+                            ? <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5"><polyline points="20 6 9 17 4 12"/></svg>
+                            : genStep === i
+                              ? <span className="w-2.5 h-2.5 rounded-full bg-white animate-pulse" />
+                              : <span className="text-gray-600 text-xs">{i+1}</span>}
+                        </div>
+                        <span className={`text-sm ${genStep >= i ? 'text-gray-200' : 'text-gray-600'}`}>{t}</span>
+                        {genStep > i && <span className="ml-auto text-green-400 text-xs font-bold">✓</span>}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {done && (
+                <div className="text-center py-2">
+                  {/* Burst rings */}
+                  <div className="relative w-20 h-20 mx-auto mb-6">
+                    <div className="absolute inset-0 rounded-full bg-green-500/20 animate-ping" style={{animationDuration:'1.4s'}} />
+                    <div className="absolute inset-0 rounded-full bg-green-500/10 animate-ping" style={{animationDuration:'1.8s',animationDelay:'0.3s'}} />
+                    <div className="relative w-20 h-20 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center check-pop">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="w-9 h-9"><polyline points="20 6 9 17 4 12"/></svg>
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-bold text-white mb-1">
+                    {answers.name ? `Roadmap ready, ${answers.name}!` : 'Your roadmap is ready!'}
+                  </h3>
+                  <p className="text-gray-400 mb-5 text-sm">
+                    A personalized <strong className="text-white">{answers.timeline || 12}-month plan</strong> for{' '}
+                    <strong className="text-white">{answers.major || 'your major'}</strong> in{' '}
+                    <strong className="text-white">{answers.country || 'your target country'}</strong>.
+                  </p>
+                  <div className="grid grid-cols-3 gap-3 mb-6">
+                    {[
+                      {icon:'📚', label:'Academic goals', color:'from-indigo-500/20 to-blue-500/20'},
+                      {icon:'🛠️', label:'3 projects',     color:'from-purple-500/20 to-pink-500/20'},
+                      {icon:'📅', label:'Monthly plan',   color:'from-green-500/20 to-emerald-500/20'},
+                    ].map((item,i) => (
+                      <div key={i} className={`bg-gradient-to-br ${item.color} border border-white/10 rounded-2xl p-3 text-center`}>
+                        <div className="text-2xl mb-1">{item.icon}</div>
+                        <div className="text-xs text-gray-300 font-medium">{item.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <button onClick={handleFinish}
+                    className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-bold py-4 rounded-2xl hover:shadow-xl hover:shadow-indigo-500/40 transition-all duration-200 flex items-center justify-center gap-2 btn-active">
+                    View My Full Roadmap <ArrowIcon />
+                  </button>
+                  <p className="text-gray-600 text-xs mt-3">Scroll down after closing to see your roadmap</p>
+                </div>
+              )}
+            </div>
+          </div>
+        );
+      }
+
+      // ── App ────────────────────────────────────────────────────────────────
+      function App() {
+        const [showModal,   setShowModal]   = useState(false);
+        const [showDemo,    setShowDemo]    = useState(false);
+        const [showPrivacy, setShowPrivacy] = useState(false);
+        const [showTerms,   setShowTerms]   = useState(false);
+        const [roadmap,     setRoadmap]     = useState(null);
+        const roadmapRef = React.useRef(null);
+
+        const openCTA     = () => { setShowDemo(false); setShowPrivacy(false); setShowTerms(false); setShowModal(true); };
+        const openDemo    = () => { setShowModal(false); setShowPrivacy(false); setShowTerms(false); setShowDemo(true); };
+        const openPrivacy = () => { setShowModal(false); setShowDemo(false); setShowTerms(false); setShowPrivacy(true); };
+        const openTerms   = () => { setShowModal(false); setShowDemo(false); setShowPrivacy(false); setShowTerms(true); };
+
+        const handleGenerate = (rm) => {
+          setRoadmap(rm);
+          setTimeout(() => {
+            roadmapRef.current && roadmapRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 320);
+        };
+
+        return (
+          <div className="min-h-screen bg-gray-950 text-white">
+            <Navbar onCTA={openCTA} />
+            <Hero onCTA={openCTA} onDemo={openDemo} />
+            <Features />
+            {roadmap && (
+              <div ref={roadmapRef}>
+                <RoadmapDisplay roadmap={roadmap} onRegenerate={openCTA} />
+              </div>
+            )}
+            <Dashboard />
+            <WhyStudentsLove onCTA={openCTA} />
+            <CTABanner onCTA={openCTA} />
+            <Footer onPrivacy={openPrivacy} onTerms={openTerms} />
+            {showModal   && <Modal       onClose={() => setShowModal(false)}   onGenerate={handleGenerate} />}
+            {showDemo    && <DemoModal   onClose={() => setShowDemo(false)}    onCTA={openCTA} />}
+            {showPrivacy && <PrivacyModal onClose={() => setShowPrivacy(false)} />}
+            {showTerms   && <TermsModal  onClose={() => setShowTerms(false)} />}
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+    </script>
+  </body>
+</html>
