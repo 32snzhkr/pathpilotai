@@ -1581,96 +1581,348 @@
           color: 'indigo',
           projects: [
             { title: 'Personal Portfolio Website', desc: 'Build a responsive site with HTML/CSS/JS showcasing your work. Deploy on GitHub Pages.', difficulty: 'Beginner' },
-            { title: 'AI Chatbot (Rule-based)', desc: 'Create a simple chatbot using Python or JavaScript with decision trees and keyword matching.', difficulty: 'Intermediate' },
-            { title: 'Full-Stack Web App', desc: 'Build a task manager or blog with React + Node.js, backed by a real database.', difficulty: 'Advanced' },
+            { title: 'AI Chatbot (Rule-based)', desc: 'Create a chatbot using Python or JavaScript with decision trees and keyword matching.', difficulty: 'Intermediate' },
+            { title: 'Full-Stack Web App', desc: 'Build a task manager or blog with React + Node.js backed by a real database.', difficulty: 'Advanced' },
           ],
           academicGoals: ['Master data structures & algorithms', 'Complete AP Computer Science or equivalent', 'Score 750+ in SAT Math', 'Learn one core language deeply (Python or Java)'],
           extracurriculars: ['USACO / IOI competitive programming', 'Open-source GitHub contributions', 'Start a coding club at school', 'Participate in hackathons (MLH, Devpost)'],
         },
+        'Cybersecurity': {
+          color: 'indigo',
+          projects: [
+            { title: 'CTF Write-Up Blog', desc: 'Compete in PicoCTF or CTFlearn and document your solutions publicly. Shows real technical depth.', difficulty: 'Beginner' },
+            { title: 'Home Lab Penetration Testing', desc: 'Set up Kali Linux + virtual machines and practice ethical hacking. Document methodology and findings.', difficulty: 'Intermediate' },
+            { title: 'Security Tool / Script', desc: 'Build an open-source security utility (vulnerability scanner, password checker) and publish on GitHub.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Study networking fundamentals (CompTIA Network+)', 'Learn Linux command line thoroughly', 'Prep CompTIA Security+ concepts', 'Study cryptography basics (Khan Academy / AES, RSA)'],
+          extracurriculars: ['CyberPatriot national cybersecurity competition', 'CTF team (school or online)', 'SANS Cyber Aces free online courses', 'HackerOne educational bug bounty program'],
+        },
+        'Data Science / AI': {
+          color: 'purple',
+          projects: [
+            { title: 'Public Dataset Analysis', desc: 'Use Python (pandas, matplotlib) to analyze a public dataset and publish visual insights on Kaggle.', difficulty: 'Beginner' },
+            { title: 'Machine Learning Prediction Model', desc: 'Build and deploy a prediction model (sentiment analysis, price prediction) using scikit-learn.', difficulty: 'Intermediate' },
+            { title: 'AI Research Paper', desc: 'Co-author a paper on AI bias or a novel ML application with a teacher or university mentor.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Master Python (numpy, pandas, scikit-learn)', 'Complete AP Statistics and Calculus', 'Study linear algebra fundamentals', 'Complete Kaggle micro-courses (free)'],
+          extracurriculars: ['Kaggle competitions (beginner tier)', 'Google Science Fair', 'Local AI/ML student club', 'Open-source ML project contributions on GitHub'],
+        },
+        'Game Development': {
+          color: 'purple',
+          projects: [
+            { title: '2D Platformer Game', desc: 'Build a complete 2D game in Unity or Godot with custom mechanics. Publish on itch.io.', difficulty: 'Beginner' },
+            { title: 'Game Jam Entry', desc: 'Compete in Global Game Jam or Ludum Dare — ship a full game in 48–72 hours.', difficulty: 'Intermediate' },
+            { title: 'Original Mobile Game', desc: 'Design, develop, and publish a polished original game on Google Play or the App Store.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Learn C# (Unity) or GDScript (Godot) deeply', 'Study game design principles and UX', 'Complete AP Computer Science or equivalent', 'Learn 2D/3D art and audio fundamentals'],
+          extracurriculars: ['Global Game Jam participant', 'School game design club', 'Active itch.io developer profile', 'GameDev.tv or Brackeys portfolio projects'],
+        },
         'Medicine / Pre-Med': {
           color: 'pink',
           projects: [
-            { title: 'Health Awareness Blog', desc: 'Write evidence-based articles on public health topics. Build an audience and SEO skills.', difficulty: 'Beginner' },
-            { title: 'Disease Data Visualization', desc: 'Use Python (matplotlib/pandas) to analyze and visualize publicly available health datasets.', difficulty: 'Intermediate' },
-            { title: 'Medical Research Paper', desc: 'Partner with a local hospital or professor to co-author a research abstract for submission.', difficulty: 'Advanced' },
+            { title: 'Health Awareness Blog', desc: 'Write evidence-based articles on public health topics. Demonstrates medical curiosity and communication.', difficulty: 'Beginner' },
+            { title: 'Disease Data Visualization', desc: 'Analyze publicly available health datasets with Python and create informative visual dashboards.', difficulty: 'Intermediate' },
+            { title: 'Medical Research Abstract', desc: 'Partner with a local hospital or professor to co-author a paper for a youth science journal.', difficulty: 'Advanced' },
           ],
-          academicGoals: ['Achieve top scores in Biology & Chemistry', 'Complete AP Biology and AP Chemistry', 'Shadow a doctor (min 50 hours)', 'Prepare for MCAT fundamentals early'],
+          academicGoals: ['Achieve top scores in Biology & Chemistry', 'Complete AP Biology and AP Chemistry', 'Shadow a physician (minimum 50 hours)', 'Volunteer in a clinical or care setting'],
           extracurriculars: ['Hospital or clinic volunteering', 'Science Olympiad (biology events)', 'Red Cross / health NGO volunteering', 'Lead a health awareness campaign at school'],
+        },
+        'Nursing / Health Sciences': {
+          color: 'pink',
+          projects: [
+            { title: 'Community Health Survey', desc: 'Survey your community on a health topic and write a clear report with actionable recommendations.', difficulty: 'Beginner' },
+            { title: 'First Aid Awareness Workshop', desc: 'Organize and document a CPR/first aid training session for your school or community.', difficulty: 'Intermediate' },
+            { title: 'Mental Health Resource Platform', desc: 'Build a vetted resource site or app for student mental health support.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Excel in Biology and Chemistry', 'Volunteer at a clinic or hospital (50+ hours)', 'Study anatomy and physiology fundamentals', 'Obtain CPR/First Aid certification'],
+          extracurriculars: ['Health fair organizer at school', 'Red Cross youth volunteer', 'Hospital volunteer program', 'Science Olympiad (disease detective events)'],
+        },
+        'Psychology': {
+          color: 'green',
+          projects: [
+            { title: 'Behavioral Observation Study', desc: 'Conduct an ethical study at school and write findings in APA format. Demonstrates research skills.', difficulty: 'Beginner' },
+            { title: 'Mental Health Awareness Campaign', desc: 'Launch a school campaign to reduce stigma. Measure and document reach and impact.', difficulty: 'Intermediate' },
+            { title: 'Youth Research Paper', desc: 'Write on adolescent behavior or cognitive bias; submit to a youth psychology competition.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Take AP Psychology (if available)', 'Study statistics (essential for research)', 'Read foundational texts (Kahneman, Cialdini)', 'Volunteer in counseling or peer mentoring'],
+          extracurriculars: ['Peer counseling or mentoring program', 'Mental health awareness club at school', 'Research assistant at a local university lab', 'School crisis support volunteer'],
+        },
+        'Architecture': {
+          color: 'orange',
+          projects: [
+            { title: 'Architectural Sketch Portfolio', desc: 'Create 20+ hand-drawn and digital sketches of buildings with process annotations.', difficulty: 'Beginner' },
+            { title: 'Community Space Redesign', desc: 'Propose a redesign for a local public space using CAD tools and present to your community.', difficulty: 'Intermediate' },
+            { title: 'Sustainable Building Concept', desc: 'Design a net-zero energy concept building with full technical, aesthetic, and environmental docs.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Master freehand and technical drawing', 'Learn AutoCAD or Rhino 3D basics', 'Study architectural history and design theory', 'Complete AP Art or AP Studio Art'],
+          extracurriculars: ['AIA student design challenge', 'SkillsUSA architecture competitions', 'Shadow a local architect or design firm', 'Build scale models for competitions'],
+        },
+        'Aerospace Engineering': {
+          color: 'blue',
+          projects: [
+            { title: 'Model Rocket Build & Launch', desc: 'Build and launch a model rocket. Document design, safety calculations, and flight data analysis.', difficulty: 'Beginner' },
+            { title: 'Drone Design & Aerodynamics Study', desc: 'Build or program a drone and conduct a structured aerodynamics and flight analysis experiment.', difficulty: 'Intermediate' },
+            { title: 'CubeSat Mission Concept', desc: 'Design a full CubeSat mission and simulate orbital mechanics with free simulation tools.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Excel in Physics (mechanics and thermodynamics)', 'Complete AP Physics C and AP Calculus BC', 'Score 800 in SAT Math', 'Study fluid mechanics and aerodynamics basics'],
+          extracurriculars: ['Team America Rocketry Challenge (TARC)', 'Science Olympiad (Wright Stuff, Boomilever)', 'NASA Artemis Student Challenges', 'AMC / AIME math olympiad'],
         },
         'Business / Economics': {
           color: 'yellow',
           projects: [
-            { title: 'Micro-Business Venture', desc: 'Launch a real small business (online store, service, or product). Document revenue and lessons.', difficulty: 'Beginner' },
-            { title: 'Market Research Report', desc: 'Conduct a 10-page industry analysis for a company or sector you find interesting.', difficulty: 'Intermediate' },
-            { title: 'Startup Pitch Deck', desc: 'Build a full investor-ready pitch deck for an original business idea and present it.', difficulty: 'Advanced' },
+            { title: 'Micro-Business Venture', desc: 'Launch a real small business (online store, tutoring, product). Document revenue and lessons learned.', difficulty: 'Beginner' },
+            { title: 'Market Research Report', desc: 'Write a 10-page industry analysis with data, trends, and strategic recommendations.', difficulty: 'Intermediate' },
+            { title: 'Startup Pitch Deck', desc: 'Build an investor-ready pitch for an original business idea and present at school or competitions.', difficulty: 'Advanced' },
           ],
-          academicGoals: ['Master microeconomics & macroeconomics fundamentals', 'Score 700+ in SAT Evidence-Based Reading', 'Study basic accounting and financial literacy', 'Learn Excel / Google Sheets modeling'],
-          extracurriculars: ['DECA or BPA competitions', 'Start a school entrepreneurship club', 'Junior Achievement or Young Entrepreneurs programs', 'Invest in paper trading / stock simulations'],
+          academicGoals: ['Master microeconomics & macroeconomics', 'Score 700+ in SAT Evidence-Based Reading', 'Study accounting and financial literacy basics', 'Learn Excel / Sheets financial modeling'],
+          extracurriculars: ['DECA or BPA competitions', 'School entrepreneurship club founder', 'Junior Achievement or Young Entrepreneurs', 'Paper trading / stock market simulations'],
         },
-        'Engineering': {
-          color: 'orange',
+        'Economics / Finance': {
+          color: 'yellow',
           projects: [
-            { title: 'Arduino / Raspberry Pi Project', desc: 'Build a hardware project like a weather station, smart home device, or robotics arm.', difficulty: 'Beginner' },
-            { title: 'CAD Design Portfolio', desc: 'Design 5+ 3D models using Fusion 360 or SolidWorks. Document the engineering process.', difficulty: 'Intermediate' },
-            { title: 'Science Fair Research Project', desc: 'Conduct an original experiment in physics, chemistry, or materials science for competition.', difficulty: 'Advanced' },
+            { title: 'Personal Finance Tracker', desc: 'Build a spreadsheet or simple app to track income, expenses, and investments with visual dashboards.', difficulty: 'Beginner' },
+            { title: 'Investment Portfolio Report', desc: 'Run a 3-month paper trading portfolio and write a professional investment analysis report.', difficulty: 'Intermediate' },
+            { title: 'Economic Policy Brief', desc: 'Research a real economic issue and publish a data-driven policy brief with recommendations.', difficulty: 'Advanced' },
           ],
-          academicGoals: ['Excel in Physics and advanced Math (Calculus)', 'Score 780+ in SAT Math', 'Complete AP Physics and AP Calculus', 'Learn CAD tools (AutoCAD or Fusion 360)'],
-          extracurriculars: ['FIRST Robotics Competition (FRC)', 'Science Olympiad (engineering events)', 'Math Olympiad (AMC/AIME)', 'Volunteer to tutor physics or math'],
+          academicGoals: ['Study AP Economics (Micro + Macro)', 'Learn financial modeling in Excel', 'Score 700+ in SAT Math and Reading', 'Study accounting fundamentals (double-entry)'],
+          extracurriculars: ['DECA finance competitions', 'School investment or trading club', 'Junior Achievement programs', 'Shadow a financial analyst or banker'],
+        },
+        'Marketing / Communications': {
+          color: 'pink',
+          projects: [
+            { title: 'Social Media Brand Campaign', desc: 'Run a 3-month social campaign for a school club or local business. Track metrics and present results.', difficulty: 'Beginner' },
+            { title: 'Full Content Strategy', desc: 'Create a documented content strategy for a real brand — audience research, channels, calendar.', difficulty: 'Intermediate' },
+            { title: 'PR Campaign & Media Kit', desc: 'Design a PR campaign for a non-profit or school event. Write press releases and pitch journalists.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Study AP Language & Composition', 'Learn analytics tools (Google Analytics, Meta Ads)', 'Build a strong personal online presence', 'Study consumer psychology principles'],
+          extracurriculars: ['School newspaper editor or lead reporter', 'Social media manager for a school club', 'PRSSA (Public Relations Student Society)', 'PR volunteer for a local charity or NGO'],
+        },
+        'Film & Media': {
+          color: 'purple',
+          projects: [
+            { title: 'Short Film (5–10 min)', desc: 'Write, direct, and edit a complete short film. Enter student film festivals and document your process.', difficulty: 'Beginner' },
+            { title: 'Mini Documentary', desc: 'Produce a 5–15 minute documentary on a local social issue. Submit to youth journalism competitions.', difficulty: 'Intermediate' },
+            { title: 'Festival-Ready Short Film', desc: 'Create a polished narrative short and submit to international student film festivals.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Learn video editing (DaVinci Resolve or Premiere Pro)', 'Study screenwriting and narrative structure', 'Take AP Art History or AP Studio Art', 'Learn cinematography and lighting basics'],
+          extracurriculars: ['School film or media production club', 'Student YouTube channel or TV station', 'Scholastic Art & Writing Awards (film)', 'Volunteer videographer for community events'],
         },
         'Law / Political Science': {
           color: 'blue',
           projects: [
-            { title: 'Opinion Editorial Column', desc: 'Write monthly op-eds on policy or legal issues for your school paper or a local publication.', difficulty: 'Beginner' },
-            { title: 'Model United Nations Leadership', desc: 'Lead MUN conferences as Secretary General or chair panels on international law.', difficulty: 'Intermediate' },
-            { title: 'Constitutional Law Essay', desc: 'Submit a legal essay to the American Bar Association or similar youth law competition.', difficulty: 'Advanced' },
+            { title: 'Opinion Editorial Column', desc: 'Write monthly op-eds on policy or legal topics for your school paper or a local publication.', difficulty: 'Beginner' },
+            { title: 'MUN Leadership Role', desc: 'Lead Model United Nations conferences as Secretary General or chair panels on international law.', difficulty: 'Intermediate' },
+            { title: 'Constitutional Law Essay', desc: 'Submit a legal essay to the ABA Law Student Division or a similar youth legal competition.', difficulty: 'Advanced' },
           ],
-          academicGoals: ['Master essay writing and argumentation', 'Score 750+ in SAT Critical Reading', 'Study AP Government / AP US History', 'Read landmark Supreme Court cases'],
-          extracurriculars: ['Debate team (state-level competitions)', 'Model United Nations (MUN)', 'Intern at a local law office or city council', 'Youth legislature or mock trial'],
+          academicGoals: ['Master essay writing and argumentation', 'Score 750+ in SAT Critical Reading', 'Study AP Government and AP US History', 'Read landmark Supreme Court cases'],
+          extracurriculars: ['Debate team (state-level competitions)', 'Model United Nations (MUN) delegate', 'Intern at a law office or city council', 'Youth legislature or mock trial program'],
+        },
+        'Engineering': {
+          color: 'orange',
+          projects: [
+            { title: 'Arduino / Raspberry Pi Project', desc: 'Build a hardware project (weather station, smart home device, robotics arm) with full documentation.', difficulty: 'Beginner' },
+            { title: 'CAD Design Portfolio', desc: 'Design 5+ 3D models using Fusion 360 or SolidWorks — include design rationale and process notes.', difficulty: 'Intermediate' },
+            { title: 'Science Fair Research Project', desc: 'Conduct an original physics, chemistry, or materials science experiment for a major competition.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Excel in Physics and advanced Math (Calculus)', 'Score 780+ in SAT Math', 'Complete AP Physics and AP Calculus', 'Learn CAD tools (AutoCAD or Fusion 360)'],
+          extracurriculars: ['FIRST Robotics Competition (FRC)', 'Science Olympiad (engineering events)', 'Math Olympiad (AMC/AIME)', 'Tutor peers in physics or math'],
+        },
+        'Mathematics / Statistics': {
+          color: 'blue',
+          projects: [
+            { title: 'Math Competition Portfolio', desc: 'Compete in AMC, AIME, or MathCounts. Document training strategies and problem-solving write-ups.', difficulty: 'Beginner' },
+            { title: 'Statistical Analysis Project', desc: 'Choose a real-world dataset and write a full statistical analysis with visualizations and conclusions.', difficulty: 'Intermediate' },
+            { title: 'Original Math Research Paper', desc: 'Explore a novel problem or proof and submit to a youth mathematics journal or competition.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Complete AP Calculus BC and AP Statistics', 'Score 800 in SAT Math', 'Work through Art of Problem Solving (AoPS) books', 'Study linear algebra and discrete math'],
+          extracurriculars: ['AMC / AIME / USAMO math olympiad', 'School math team (captain role)', 'Math circle or summer program (PROMYS, ROSS)', 'Tutor advanced mathematics to peers'],
+        },
+        'Environmental Science': {
+          color: 'green',
+          projects: [
+            { title: 'Local Biodiversity Study', desc: 'Survey local ecosystems, document findings with photos and data, and write a conservation report.', difficulty: 'Beginner' },
+            { title: 'Environmental Quality Monitor', desc: 'Build or use a sensor to monitor local air or water quality. Visualize data trends over time.', difficulty: 'Intermediate' },
+            { title: 'Climate Research Paper', desc: 'Analyze regional climate data and submit an evidence-based findings paper to a youth science journal.', difficulty: 'Advanced' },
+          ],
+          academicGoals: ['Excel in AP Environmental Science and Biology', 'Learn GIS and environmental data collection tools', 'Study ecology and climate science fundamentals', 'Complete an online sustainability certification'],
+          extracurriculars: ['Science Olympiad (ecology/environment events)', 'Envirothon competition', 'Local conservation volunteer program', 'Student sustainability committee at school'],
         },
         'Arts / Design': {
           color: 'purple',
           projects: [
-            { title: 'Design Portfolio (20 pieces)', desc: 'Curate a diverse portfolio with branding, typography, and UI work. Use Figma or Adobe Suite.', difficulty: 'Beginner' },
-            { title: 'Brand Identity Project', desc: 'Design a complete brand for a fictional or real local business: logo, color system, mockups.', difficulty: 'Intermediate' },
-            { title: 'Social Impact Design Campaign', desc: 'Create a design campaign addressing a real social issue. Submit to design competitions.', difficulty: 'Advanced' },
+            { title: 'Design Portfolio (20 pieces)', desc: 'Curate a diverse portfolio with branding, typography, and UI work using Figma or Adobe Suite.', difficulty: 'Beginner' },
+            { title: 'Brand Identity Project', desc: 'Design a complete brand (logo, color system, mockups) for a real or fictional local business.', difficulty: 'Intermediate' },
+            { title: 'Social Impact Design Campaign', desc: 'Create a full design campaign for a social issue and submit to youth design competitions.', difficulty: 'Advanced' },
           ],
-          academicGoals: ['Develop technical skills in Adobe CC or Figma', 'Study art history and design theory', 'Maintain a daily creative sketchbook', 'Complete AP Art or AP Studio Art'],
-          extracurriculars: ['Submit to YoungArts or Scholastic Art Awards', 'Design posters/branding for school clubs', 'Attend summer design or art intensives', 'Freelance small design projects'],
+          academicGoals: ['Develop skills in Adobe CC or Figma', 'Study art history and design theory', 'Maintain a daily creative sketchbook', 'Complete AP Art or AP Studio Art'],
+          extracurriculars: ['YoungArts or Scholastic Art Awards', 'Design branding for school clubs', 'Summer design intensive program', 'Freelance small design projects locally'],
         },
       };
 
+      // Smart major matching — works with ANY input text
+      function findMajorData(input) {
+        if (!input || !input.trim()) return { ...MAJOR_DATA['Computer Science'], _key: 'Computer Science' };
+        const lower = input.toLowerCase().trim();
+        // Exact key match
+        for (const key of Object.keys(MAJOR_DATA)) {
+          if (lower === key.toLowerCase()) return { ...MAJOR_DATA[key], _key: key };
+        }
+        // Substring match
+        for (const key of Object.keys(MAJOR_DATA)) {
+          if (lower.includes(key.toLowerCase()) || key.toLowerCase().includes(lower)) return { ...MAJOR_DATA[key], _key: key };
+        }
+        // Keyword routing
+        if (/cyber|security|hack|infosec|network security/.test(lower)) return { ...MAJOR_DATA['Cybersecurity'], _key: 'Cybersecurity' };
+        if (/data sci|data ana|machine learn|artificial intell|deep learn|neural|nlp|ai\/ml/.test(lower)) return { ...MAJOR_DATA['Data Science / AI'], _key: 'Data Science / AI' };
+        if (/\bgame\b|gaming|unity|unreal|game dev|interactive media/.test(lower)) return { ...MAJOR_DATA['Game Development'], _key: 'Game Development' };
+        if (/psycholog|mental health|behavior|counseling/.test(lower)) return { ...MAJOR_DATA['Psychology'], _key: 'Psychology' };
+        if (/architect|interior design|urban plan/.test(lower)) return { ...MAJOR_DATA['Architecture'], _key: 'Architecture' };
+        if (/aerospace|aeronaut|aviation|space eng|rocket/.test(lower)) return { ...MAJOR_DATA['Aerospace Engineering'], _key: 'Aerospace Engineering' };
+        if (/econom|financ|banking|accounting|invest/.test(lower)) return { ...MAJOR_DATA['Economics / Finance'], _key: 'Economics / Finance' };
+        if (/marketing|brand|advertis|communicat|public rel/.test(lower)) return { ...MAJOR_DATA['Marketing / Communications'], _key: 'Marketing / Communications' };
+        if (/nursing|nurse|health sci|paramedic|allied health/.test(lower)) return { ...MAJOR_DATA['Nursing / Health Sciences'], _key: 'Nursing / Health Sciences' };
+        if (/film|cinema|media stud|photogr|animat|broadcast|journalism/.test(lower)) return { ...MAJOR_DATA['Film & Media'], _key: 'Film & Media' };
+        if (/\bmath|statistic|actuarial/.test(lower)) return { ...MAJOR_DATA['Mathematics / Statistics'], _key: 'Mathematics / Statistics' };
+        if (/environment|ecology|sustainab|climate|earth sci/.test(lower)) return { ...MAJOR_DATA['Environmental Science'], _key: 'Environmental Science' };
+        if (/law|legal|politic|juris|governance|diplomacy/.test(lower)) return { ...MAJOR_DATA['Law / Political Science'], _key: 'Law / Political Science' };
+        if (/\bart\b|graphic|illustrat|fine art|visual art|design/.test(lower)) return { ...MAJOR_DATA['Arts / Design'], _key: 'Arts / Design' };
+        if (/medicine|medic|pre-med|pre med|doctor|clinical/.test(lower)) return { ...MAJOR_DATA['Medicine / Pre-Med'], _key: 'Medicine / Pre-Med' };
+        if (/engineering|engineer|mechanical|civil|chemical|electrical/.test(lower)) return { ...MAJOR_DATA['Engineering'], _key: 'Engineering' };
+        if (/business|manage|entrepreneur|mba|commerce/.test(lower)) return { ...MAJOR_DATA['Business / Economics'], _key: 'Business / Economics' };
+        if (/comput|program|software|web dev|app dev|coding/.test(lower)) return { ...MAJOR_DATA['Computer Science'], _key: 'Computer Science' };
+        // Dynamic fallback for any unrecognized major
+        return {
+          _key: input,
+          color: 'indigo',
+          projects: [
+            { title: input + ' Research Paper', desc: 'Write an original research paper in your field and submit to a youth academic journal or competition.', difficulty: 'Beginner' },
+            { title: input + ' Portfolio Project', desc: 'Build a real, documented project demonstrating your skills and passion in ' + input + '.', difficulty: 'Intermediate' },
+            { title: 'Mentorship & Field Experience', desc: 'Reach out to 3 professionals in ' + input + ' for mentorship or shadowing. Document and reflect on insights.', difficulty: 'Advanced' },
+          ],
+          academicGoals: [
+            'Excel in the core subjects relevant to ' + input,
+            'Score 700+ in standardized tests (SAT/ACT)',
+            'Build a documented personal project portfolio',
+            'Research and list the top 5 universities offering ' + input,
+          ],
+          extracurriculars: [
+            'Join or found a ' + input + '-related club at school',
+            'Attend relevant online conferences or webinars in your field',
+            'Volunteer with an organization relevant to ' + input,
+            'Compete in field-related competitions or academic olympiads',
+          ],
+        };
+      }
+
       const COUNTRY_DATA = {
         'USA': {
-          exams: ['SAT (target 1400+)', 'ACT (target 32+)', 'AP exams (aim for 4-5)', 'TOEFL 100+ or IELTS 7.0+'],
-          timeline: ['Aug–Oct: Common App opens, essays due', 'Nov 1: Early Action/Decision deadlines', 'Jan 1: Regular Decision deadline', 'Mar–Apr: Decisions released'],
-          tips: 'Focus heavily on extracurricular depth and leadership. Quality over quantity. Demonstrated interest matters.',
+          exams: ['SAT (target 1400+)', 'ACT (target 32+)', 'AP exams (aim for 4–5)', 'TOEFL 100+ or IELTS 7.0+'],
+          timeline: ['Aug–Oct: Common App opens, essays due', 'Nov 1: Early Action/Decision deadlines', 'Jan 1: Regular Decision deadline', 'Mar–Apr: Admission decisions released'],
+          tips: 'Focus heavily on extracurricular depth and leadership. Quality over quantity. Demonstrated interest matters at many schools.',
         },
         'UK': {
-          exams: ['UCAS application (5 choices)', 'A-Levels or IB Diploma', 'IELTS 7.0+ (most universities)', 'UKCAT/BMAT for Medicine/Dentistry'],
-          timeline: ['Sep–Oct: UCAS opens, write personal statement', 'Oct 15: Oxbridge/Medicine deadline', 'Jan 15: Main UCAS deadline', 'May–Jun: Firm & Insurance choices'],
-          tips: 'Personal statement is critical — one essay for all 5 universities. Show intellectual curiosity and subject passion.',
+          exams: ['UCAS application (up to 5 choices)', 'A-Levels or IB Diploma required', 'IELTS 7.0+ (most universities)', 'UKCAT/BMAT for Medicine/Dentistry'],
+          timeline: ['Sep–Oct: UCAS opens, write personal statement', 'Oct 15: Oxbridge/Medicine deadline', 'Jan 15: Main UCAS deadline', 'May–Jun: Confirm Firm & Insurance choices'],
+          tips: 'Personal statement is critical — one essay for all 5 universities. Show intellectual curiosity and genuine subject passion.',
         },
         'Canada': {
-          exams: ['SAT/ACT (optional at many schools)', 'Provincial exams (varies by province)', 'IELTS 6.5+ / TOEFL 90+', 'Strong GPA is primary factor'],
-          timeline: ['Oct–Nov: Applications open', 'Jan–Feb: Most deadlines', 'Mar–Apr: Admission offers', 'May 1–Jun 1: Accept offers'],
-          tips: 'GPA is the most important factor at Canadian universities. Community involvement and awards help differentiation.',
+          exams: ['SAT/ACT (optional at many schools)', 'Provincial exams (varies by province)', 'IELTS 6.5+ / TOEFL 90+', 'Strong GPA is the primary factor'],
+          timeline: ['Oct–Nov: Applications open', 'Jan–Feb: Most application deadlines', 'Mar–Apr: Admission offers sent', 'May 1–Jun 1: Accept or decline offers'],
+          tips: 'GPA is the most important factor. Community involvement and awards help differentiate applications.',
         },
         'Germany': {
-          exams: ['TestDaF or DSH (German proficiency)', 'IELTS 6.0+ for English-taught programs', 'Uni-Assist application platform', 'Numerus Clausus (NC) GPA threshold'],
-          timeline: ['Jan 15: Winter semester applications', 'Jul 15: Summer semester applications', 'Oct/Apr: Semesters start', 'Blocked account: €11,208/year proof'],
+          exams: ['TestDaF or DSH (German proficiency)', 'IELTS 6.0+ for English-taught programs', 'Uni-Assist application platform', 'Numerus Clausus (NC) GPA threshold applies'],
+          timeline: ['Jan 15: Winter semester application deadline', 'Jul 15: Summer semester application deadline', 'Oct / Apr: Semesters begin', 'Blocked account: ~€11,208/year proof required'],
           tips: 'Most public universities are tuition-free. Blocked bank account and language certificate are mandatory for visa.',
         },
         'Australia': {
-          exams: ['IELTS 6.5–7.0+ / TOEFL 79–94+', 'ATAR or equivalent score', 'UAC / VTAC / QTAC applications', 'Some programs need GAMSAT/UCAT'],
-          timeline: ['Aug–Sep: Applications open', 'Sep–Nov: Main application period', 'Dec–Jan: Offers released', 'Feb/Jul: Semester start dates'],
-          tips: 'Strong ATAR and English scores drive admission. Student visa requires financial proof (~AU$21,041/year).',
+          exams: ['IELTS 6.5–7.0+ / TOEFL 79–94+', 'ATAR or equivalent national exam score', 'UAC / VTAC / QTAC application portals', 'Some programs require GAMSAT or UCAT'],
+          timeline: ['Aug–Sep: Applications open', 'Sep–Nov: Main application period', 'Dec–Jan: Admission offers released', 'Feb / Jul: Semester start dates'],
+          tips: 'Strong ATAR and English scores drive admission. Student visa requires financial proof (~AU$21,041/year living costs).',
+        },
+        'Netherlands': {
+          exams: ['IELTS 6.5+ or TOEFL 90+ (most programs in English)', 'Studielink platform for all applications', 'Numerus Fixus (limited spots) — apply by Jan 15', 'Dutch diploma or equivalent certificate'],
+          timeline: ['Jan 15: Numerus Fixus application deadline', 'Apr–May: Regular application window', 'Jun–Jul: Admission offers', 'Sep: Academic year begins'],
+          tips: 'Most bachelor programs are taught in English. Tuition is ~€2,500/year (EU) and €6,000–12,000 (non-EU). Apply early for housing — it fills up fast.',
+        },
+        'South Korea': {
+          exams: ['TOPIK Level 3–4 (Korean language test)', 'IELTS 5.5+ / TOEFL 71+ for English programs', 'University entrance portfolio for arts/design programs', 'GKS (Government scholarship) competitive exam'],
+          timeline: ['Sep–Nov: Applications for spring admission', 'Mar–May: Applications for fall admission', 'Feb / Aug: Semester start dates', 'GKS scholarship: March deadline (apply 12 months early)'],
+          tips: 'Korea offers the GKS scholarship covering full tuition, housing, and stipend. KAIST, POSTECH, and SNU are world-class with strong English programs.',
+        },
+        'Japan': {
+          exams: ['JLPT N2 or N1 (Japanese language)', 'IELTS 6.0+ for English-taught programs', 'EJU (Examination for Japanese University Admission)', 'MEXT scholarship exam (highly competitive)'],
+          timeline: ['Oct–Dec: MEXT scholarship applications open', 'Apr–May: University direct application window', 'Sep / Apr: Semester start dates (April is main)', 'JASSO scholarship applications in April'],
+          tips: 'MEXT scholarship covers tuition and living costs — apply early, competition is intense. Japan offers world-class universities at very affordable fees.',
+        },
+        'UAE / Dubai': {
+          exams: ['IELTS 6.0–6.5+ / TOEFL 79+', 'SAT/ACT (recommended for US-branch campuses)', 'Portfolio required for arts and design programs', 'EmSAT (UAE national exam for citizens)'],
+          timeline: ['Jan–Apr: Main application window', 'May–Jun: Late applications (some universities)', 'Aug–Sep: Fall semester starts', 'Jan: Spring semester starts'],
+          tips: 'Dubai hosts branch campuses of NYU, Middlesex, Heriot-Watt, and more. Many offer merit scholarships. Strong English scores and extracurriculars are key.',
+        },
+        'France': {
+          exams: ['TCF or DELF/DALF (for French-taught programs)', 'IELTS 6.0+ / TOEFL 79+ for English programs', 'Parcoursup platform (EU/EEA applicants)', 'DAP platform (non-EU applicants to most programs)'],
+          timeline: ['Jan 20: Parcoursup opens for registration', 'Mar 9: Main application deadline (Parcoursup)', 'May–Jun: Admission offers published', 'Sep: Academic year begins'],
+          tips: 'HEC Paris, Sciences Po, and INSEAD are among the world\'s best. Many top grandes écoles conduct programs in English. Apply early and write compelling motivation letters.',
+        },
+        'Sweden / Nordic': {
+          exams: ['IELTS 6.5+ / TOEFL 90+ (English-taught programs)', 'universityadmissions.se for Sweden', 'SweSAT (Swedish university entrance test, if applicable)', 'Norwegian / Finnish equivalent portals for those countries'],
+          timeline: ['Oct 15: Applications open for fall intake', 'Jan 15: Application deadline for fall semester', 'Apr: Admission results published', 'Aug–Sep: Semester starts'],
+          tips: 'Sweden, Norway, and Finland offer tuition-free university for EU/EEA students. Non-EU students pay ~€8,000–15,000/year in Sweden. Research is world-class.',
+        },
+        'Singapore': {
+          exams: ['A-Level or IB Diploma (NUS, NTU, SMU)', 'IELTS 6.5+ / TOEFL 90+', 'SAT (for some programs at NUS/SMU)', 'GCE O-Level for polytechnic direct entry'],
+          timeline: ['Feb–Mar: Applications open (NUS, NTU)', 'Mar–Apr: Application deadline', 'May–Jun: Admission offers announced', 'Jul / Aug: Orientation and semester start'],
+          tips: 'NUS and NTU rank consistently in the global top 20. Competition is intense. Strong academics + leadership roles + research exposure are required.',
+        },
+        'Turkey': {
+          exams: ['YÖS (Foreign Student Exam) or SAT', 'IELTS 6.0+ for English-medium programs', 'Türkiye Scholarships (government-funded, competitive)', 'TÖMER Turkish language proficiency for Turkish-taught programs'],
+          timeline: ['Feb–Mar: Türkiye Scholarships application period', 'Apr–Jun: University direct application window', 'Jul: Acceptance notices sent', 'Sep–Oct: Academic year starts'],
+          tips: 'Türkiye Scholarships cover full tuition, housing, and a monthly stipend. Apply for scholarships first — deadlines are early February.',
+        },
+        'Kazakhstan': {
+          exams: ['UNT (Unified National Test) for domestic entry', 'IELTS 5.5+ / TOEFL 61+ for international programs', 'Bolashak Scholarship (government, competitive, for studying abroad)', 'Russian language for Russian-taught programs'],
+          timeline: ['May–Jun: UNT for domestic applicants', 'Jun–Jul: Bolashak application period', 'Aug–Sep: Enrollment and semester starts', 'For abroad study: follow destination country deadlines'],
+          tips: 'Bolashak scholarship funds study at top global universities. Eligibility: under 35, high academic achievement, Kazakh citizenship required.',
+        },
+        'China': {
+          exams: ['HSK Level 4+ (Chinese language proficiency)', 'IELTS 6.0+ / TOEFL 79+ for English-medium programs', 'CSC (China Scholarship Council) application', 'High school diploma or equivalent transcript'],
+          timeline: ['Nov–Mar: CSC scholarship application window', 'Mar–Jun: University direct application period', 'Jun–Aug: Admission letters issued', 'Sep: Academic year begins'],
+          tips: 'China offers many full CSC scholarships. Top universities (PKU, Tsinghua, SJTU) increasingly offer English-medium programs. HSK certification strengthens any application.',
         },
         'Other': {
           exams: ['IELTS 6.5+ or TOEFL 90+', 'Country-specific standardized tests', 'Transcripts with certified translations', 'Letters of recommendation (2–3)'],
-          timeline: ['Research each school\'s deadlines', '12–18 months ahead: start applications', 'Check scholarship deadlines (often earlier)', 'Apply for student visa 3–6 months before'],
-          tips: 'Research each country\'s specific requirements. Start early, especially for visa and financial proof documentation.',
+          timeline: ['Research each school\'s individual deadlines carefully', '12–18 months ahead: start applications and visa prep', 'Check scholarship deadlines (often earlier than admissions)', 'Apply for student visa 3–6 months before arrival'],
+          tips: 'Research each country\'s specific admission requirements carefully. Start 18+ months early — financial proof and visa documentation take more time than expected.',
         },
       };
+
+      // Smart country matching — handles any input
+      function findCountryData(input) {
+        if (!input || !input.trim()) return { ...COUNTRY_DATA['Other'], _key: 'Other' };
+        const lower = input.toLowerCase().trim();
+        const KEYWORDS = {
+          'USA':             ['usa', 'united states', 'america', 'us', 'american'],
+          'UK':              ['uk', 'united kingdom', 'britain', 'england', 'scotland', 'wales', 'british'],
+          'Canada':          ['canada', 'canadian'],
+          'Germany':         ['germany', 'german', 'deutschland'],
+          'Australia':       ['australia', 'australian'],
+          'Netherlands':     ['netherlands', 'holland', 'dutch'],
+          'South Korea':     ['south korea', 'korea', 'korean'],
+          'Japan':           ['japan', 'japanese'],
+          'UAE / Dubai':     ['uae', 'dubai', 'emirates', 'abu dhabi', 'united arab'],
+          'France':          ['france', 'french', 'paris'],
+          'Sweden / Nordic': ['sweden', 'swedish', 'nordic', 'norway', 'norwegian', 'finland', 'finnish', 'denmark', 'danish'],
+          'Singapore':       ['singapore', 'singaporean'],
+          'Turkey':          ['turkey', 'turkish', 'türkiye'],
+          'Kazakhstan':      ['kazakhstan', 'kazakh'],
+          'China':           ['china', 'chinese', 'prc'],
+        };
+        for (const [country, keys] of Object.entries(KEYWORDS)) {
+          if (keys.some(k => lower.includes(k))) return { ...COUNTRY_DATA[country], _key: country };
+        }
+        return { ...COUNTRY_DATA['Other'], _key: 'Other' };
+      }
 
       const ENGLISH_TASKS = {
         'Beginner': [
@@ -1683,9 +1935,9 @@
         'Intermediate': [
           'Read one English news article daily (BBC, Reuters)',
           'Practice IELTS Academic writing Task 1 & 2 weekly',
-          'Join Toastmasters or English speaking club',
-          'Listen to English podcasts during commute',
-          'Write 1 essay per week and get feedback',
+          'Join Toastmasters or an English speaking club',
+          'Listen to English podcasts during your commute',
+          'Write 1 essay per week and get feedback from a mentor',
         ],
         'Advanced': [
           'Take IELTS or TOEFL mock tests monthly',
@@ -1697,67 +1949,67 @@
       };
 
       function generateRoadmap(f) {
-        const majorKey = Object.keys(MAJOR_DATA).find(k => k.toLowerCase().includes(f.major.toLowerCase())) || 'Computer Science';
-        const countryKey = Object.keys(COUNTRY_DATA).find(k => k.toLowerCase().includes(f.country.toLowerCase())) || 'Other';
-        const englishKey = ['Beginner','Intermediate','Advanced'].includes(f.englishLevel) ? f.englishLevel : 'Intermediate';
-        const major = MAJOR_DATA[majorKey];
-        const country = COUNTRY_DATA[countryKey];
-        const months = parseInt(f.timeline) || 12;
-        const gpa = parseFloat(f.gpa) || 3.5;
+        const majorData  = findMajorData(f.major);
+        const countryData = findCountryData(f.country);
+        const englishKey  = ['Beginner','Intermediate','Advanced'].includes(f.englishLevel) ? f.englishLevel : 'Intermediate';
+        const months  = parseInt(f.timeline) || 12;
+        const gpa     = parseFloat(f.gpa) || 3.5;
+        const majorKey   = majorData._key   || f.major   || 'your major';
+        const countryKey = countryData._key || f.country || 'your target country';
+
         const gpaNote = gpa < 3.0
           ? 'GPA needs urgent attention (below 3.0/5.0) — focus on academic recovery before anything else.'
           : gpa < 3.5
-            ? 'GPA is developing (3.0–3.4/5.0) — target consistent improvement and highlight upward trend.'
+            ? 'GPA is developing (3.0–3.4/5.0) — target consistent improvement and highlight the upward trend.'
             : gpa < 4.0
               ? 'Solid GPA (3.5–3.9/5.0) — maintain momentum and strengthen standardized test scores.'
               : gpa < 4.5
                 ? 'Strong GPA (4.0–4.4/5.0) — leverage this in applications and aim for selective programs.'
                 : 'Excellent GPA (4.5+/5.0) — you are highly competitive; apply to top-tier programs with confidence.';
 
-        // Build month-by-month timeline
         const phases = [];
         if (months <= 6) {
-          phases.push({ range: 'Month 1–2', label: 'Foundation', color: 'indigo', tasks: ['Audit current grades and identify weak subjects', 'Set up study schedule (2h focused study/day)', country.exams[0] + ' — register and begin prep', 'Start English improvement plan'] });
-          phases.push({ range: 'Month 3–4', label: 'Build', color: 'purple', tasks: ['Begin Portfolio Project #1: ' + major.projects[0].title, 'Join 1 extracurricular from your list', 'Draft your personal statement outline', 'First mock exam — assess gaps'] });
-          phases.push({ range: 'Month 5–6', label: 'Launch', color: 'pink', tasks: ['Finalize and submit applications', 'Complete Portfolio Project #2', 'Request letters of recommendation', country.timeline[0]] });
+          phases.push({ range: 'Month 1–2', label: 'Foundation', color: 'indigo', tasks: ['Audit grades and identify weak subjects', 'Set up 2h/day focused study schedule', (countryData.exams[0] || 'Standardized test') + ' — register and begin prep', 'Start English improvement plan'] });
+          phases.push({ range: 'Month 3–4', label: 'Build', color: 'purple', tasks: ['Begin Portfolio Project #1: ' + majorData.projects[0].title, 'Join 1 extracurricular from your list', 'Draft your personal statement outline', 'First mock exam — assess gaps'] });
+          phases.push({ range: 'Month 5–6', label: 'Launch', color: 'pink', tasks: ['Finalize and submit applications', 'Complete Portfolio Project #2', 'Request letters of recommendation', countryData.timeline[0] || 'Submit by the deadline'] });
         } else if (months <= 9) {
-          phases.push({ range: 'Month 1–3', label: 'Foundation', color: 'indigo', tasks: ['Deep-dive into academic weak spots', 'Register for ' + country.exams[0], 'Start English level-up plan', 'Research target universities in ' + (f.country || 'your target country')] });
-          phases.push({ range: 'Month 4–6', label: 'Build Skills', color: 'purple', tasks: ['Launch Portfolio Project #1: ' + major.projects[0].title, 'Join 2 extracurriculars', 'Take first practice exam', 'Write essay draft #1'] });
-          phases.push({ range: 'Month 7–9', label: 'Apply & Submit', color: 'pink', tasks: ['Complete all application essays', country.timeline[0], 'Request recommendations', 'Finalize college list'] });
+          phases.push({ range: 'Month 1–3', label: 'Foundation', color: 'indigo', tasks: ['Deep-dive into academic weak spots', 'Register for ' + (countryData.exams[0] || 'required entrance exam'), 'Start English level-up plan', 'Research target universities in ' + countryKey] });
+          phases.push({ range: 'Month 4–6', label: 'Build Skills', color: 'purple', tasks: ['Launch Portfolio Project #1: ' + majorData.projects[0].title, 'Join 2 extracurriculars from your list', 'Take first full practice exam', 'Write essay draft #1'] });
+          phases.push({ range: 'Month 7–' + months, label: 'Apply & Submit', color: 'pink', tasks: ['Complete all application essays', countryData.timeline[0] || 'Submit applications on time', 'Request recommendations early', 'Finalize and rank your college list'] });
         } else {
-          phases.push({ range: 'Month 1–3', label: 'Discovery & Foundation', color: 'indigo', tasks: ['Self-assessment: subjects, strengths, goals', 'Create daily study routine', 'Register for standardized tests: ' + country.exams[0], 'Begin English plan: ' + ENGLISH_TASKS[englishKey][0]] });
-          phases.push({ range: 'Month 4–6', label: 'Skill Building', color: 'purple', tasks: ['Launch Portfolio Project #1: ' + major.projects[0].title, 'Join extracurricular #1 from your list', 'Take practice/mock exam — review gaps', 'Essay brainstorming sessions (5 story ideas)'] });
-          phases.push({ range: 'Month 7–9', label: 'Momentum', color: 'blue', tasks: ['Start Portfolio Project #2: ' + major.projects[1].title, 'Apply for summer programs or competitions', 'Essay draft #1 complete + get feedback', 'Request teacher recommendations early'] });
-          phases.push({ range: 'Month 10–12', label: 'Application Season', color: 'green', tasks: ['Finalize all application essays', country.timeline[0] || 'Submit applications on time', 'Complete scholarship applications', 'Celebrate milestones — track your streak!'] });
+          phases.push({ range: 'Month 1–3', label: 'Discovery & Foundation', color: 'indigo', tasks: ['Self-assessment: subjects, strengths, goals', 'Create daily study routine', 'Register for: ' + (countryData.exams[0] || 'required entrance exams'), 'Begin English plan: ' + ENGLISH_TASKS[englishKey][0]] });
+          phases.push({ range: 'Month 4–6', label: 'Skill Building', color: 'purple', tasks: ['Launch Portfolio Project #1: ' + majorData.projects[0].title, 'Join extracurricular #1: ' + (majorData.extracurriculars[0] || 'relevant club or competition'), 'Take practice exam — review gaps', 'Essay brainstorming (5 strong story ideas)'] });
+          phases.push({ range: 'Month 7–9', label: 'Momentum', color: 'blue', tasks: ['Start Portfolio Project #2: ' + majorData.projects[1].title, 'Apply for summer programs or competitions', 'Essay draft #1 complete + get feedback', 'Request teacher recommendations early'] });
+          phases.push({ range: 'Month 10–' + months, label: 'Application Season', color: 'green', tasks: ['Finalize all application essays', countryData.timeline[0] || 'Submit applications on time', 'Complete scholarship applications', 'Polish Portfolio Project #2 for submission'] });
         }
 
-        // Weekly tasks
         const weeklyTasks = [
-          { week: 'Week 1–2', tasks: ['Set up study schedule and environment', 'Register for ' + country.exams[0], 'Identify top 3 academic improvement areas', 'Create your PathPilot dashboard habit'] },
-          { week: 'Week 3–4', tasks: ['Complete 2 practice tests', ENGLISH_TASKS[englishKey][0], 'Research 5 universities in ' + (f.country || 'target country'), 'Outline your personal statement'] },
-          { week: 'Week 5–8', tasks: ['Start Portfolio Project: ' + major.projects[0].title, 'Join one extracurricular activity', 'Write essay draft #1 (600 words)', 'Contact potential recommendation writers'] },
-          { week: 'Week 9–12', tasks: ['Review and revise essay with a mentor', 'Complete at least 4 full mock exams', 'Polish Portfolio Project #1', 'Start building your activities list for applications'] },
+          { week: 'Week 1–2', tasks: ['Set up study schedule and productive workspace', 'Register for ' + (countryData.exams[0] || 'required exams'), 'Identify top 3 academic improvement areas', 'Create your PathPilot progress tracking habit'] },
+          { week: 'Week 3–4', tasks: ['Complete 2 full practice tests', ENGLISH_TASKS[englishKey][0], 'Research 5 universities in ' + countryKey, 'Outline your personal statement (3 story options)'] },
+          { week: 'Week 5–8', tasks: ['Start Portfolio Project: ' + majorData.projects[0].title, 'Join: ' + (majorData.extracurriculars[0] || 'a relevant extracurricular'), 'Write essay draft #1 (600+ words)', 'Contact 3 potential recommendation writers'] },
+          { week: 'Week 9–12', tasks: ['Revise essay with a trusted mentor or teacher', 'Complete at least 4 full mock exams', 'Polish and document Portfolio Project #1', 'Build your detailed activities list for applications'] },
         ];
 
         return {
           name: f.name,
-          major: majorKey,
-          country: countryKey,
+          major: f.major || majorKey,
+          country: f.country || countryKey,
           englishLevel: englishKey,
           gpa,
           gpaNote,
           timeline: months,
-          academicGoals: [...major.academicGoals, gpaNote],
+          academicGoals: [...majorData.academicGoals, gpaNote],
           englishGoals: ENGLISH_TASKS[englishKey],
-          projects: major.projects,
-          extracurriculars: major.extracurriculars,
-          countryExams: country.exams,
-          countryTips: country.tips,
+          projects: majorData.projects,
+          extracurriculars: majorData.extracurriculars,
+          countryExams: countryData.exams,
+          countryTips: countryData.tips,
           phases,
           weeklyTasks,
-          color: major.color,
+          color: majorData.color,
         };
       }
+
 
       // ── Roadmap Display ────────────────────────────────────────────────────
       function RoadmapDisplay({ roadmap, onRegenerate }) {
@@ -3509,33 +3761,81 @@
 
       function CareerTestPage() {
         const { lang } = useLang();
-        const [mode,    setMode]    = useState(null);  // null | 'quick' | 'deep'
-        const [step,    setStep]    = useState(0);
+        const [mode,    setMode]    = useState(null);   // null | 'quick' | 'deep'
         const [answers, setAnswers] = useState([]);
         const [hovered, setHovered] = useState(null);
 
-        // Quick test: 3 questions from each of the 5 topic blocks (indices 0-29)
+        // Quick: 3 questions from each of 5 topic blocks
         const QUICK_IDX = [0, 2, 4,  6, 8, 10,  12, 14, 16,  18, 20, 22,  24, 26, 28];
-        const questions = mode === 'quick'
-          ? QUICK_IDX.map(i => CAREER_QUESTIONS[i])
-          : CAREER_QUESTIONS;
-        const TOTAL   = mode ? questions.length : 0;  // 15 or 30
-        const isDeep  = mode === 'deep';
+        const questions = mode === 'quick' ? QUICK_IDX.map(i => CAREER_QUESTIONS[i]) : CAREER_QUESTIONS;
+        const TOTAL = mode ? questions.length : 0;
 
         const pickAnswer = (cat) => {
           setAnswers(prev => [...prev, cat]);
           setHovered(null);
-          setStep(s => s + 1);
         };
 
-        const restart = () => { setMode(null); setStep(0); setAnswers([]); setHovered(null); };
-
-        const switchToDeep = () => { setMode('deep'); setStep(0); setAnswers([]); setHovered(null); };
+        const restart      = () => { setMode(null); setAnswers([]); setHovered(null); };
+        const switchToDeep = () => { setMode('deep'); setAnswers([]); setHovered(null); };
 
         const getScores = () => {
           const s = { tech:0, business:0, creative:0, social:0 };
           answers.forEach(c => { if (c in s) s[c]++; });
           return s;
+        };
+
+        // Deep personality analysis
+        const buildAnalysis = (scores, sorted, langCode) => {
+          const top    = sorted[0][0];
+          const second = sorted[1][0];
+          const bottom = sorted[3][0];
+
+          const isRu = langCode === 'ru';
+
+          const workStyle = (scores.tech + scores.creative) >= (scores.business + scores.social)
+            ? (isRu ? 'Независимый' : 'Independent')
+            : (isRu ? 'Командный'   : 'Collaborative');
+          const thinkingStyle = (scores.tech + scores.business) >= (scores.creative + scores.social)
+            ? (isRu ? 'Аналитический' : 'Analytical')
+            : (isRu ? 'Интуитивный'   : 'Intuitive');
+
+          const TYPES = {
+            tech_business:    { en:'Analytical Builder',        ru:'Аналитический строитель',    enD:'You combine technical precision with strategic vision — you turn complex systems into scalable, profitable solutions.',        ruD:'Ты сочетаешь точность и стратегию — строишь системы, которые масштабируются и приносят результат.' },
+            tech_creative:    { en:'Technical Creative',         ru:'Технический творец',          enD:'You blend engineering rigor with artistic instinct. You can both invent and design beautifully — a rare and powerful combination.', ruD:'Ты соединяешь инженерную строгость с художественным видением — редкое и мощное сочетание.' },
+            tech_social:      { en:'Human-Centered Builder',     ru:'Человекоцентричный строитель', enD:'You build technology with empathy at its core. Your products are designed to genuinely improve people\'s lives.',              ruD:'Ты создаёшь технологии с заботой о людях — твои продукты меняют жизни.' },
+            business_tech:    { en:'Strategic Technologist',    ru:'Стратегический технолог',     enD:'You speak fluent business and tech. You spot opportunities where technology creates a decisive competitive edge.',              ruD:'Ты говоришь на языке бизнеса и технологий — видишь возможности там, где другие не замечают.' },
+            business_creative:{ en:'Creative Strategist',       ru:'Творческий стратег',          enD:'You craft ideas that are both beautiful and profitable. Marketing, branding, and creative entrepreneurship are your arena.',   ruD:'Ты создаёшь идеи, которые красивы и прибыльны — маркетинг и брендинг твоя стихия.' },
+            business_social:  { en:'Social Entrepreneur',      ru:'Социальный предприниматель',  enD:'You build organizations that both make money and create lasting positive change in communities.',                             ruD:'Ты создаёшь организации, которые зарабатывают и меняют мир к лучшему.' },
+            creative_tech:    { en:'Digital Maker',             ru:'Цифровой создатель',          enD:'You turn imagination into interactive experiences. Design, animation, and digital creation are your native language.',         ruD:'Ты превращаешь воображение в цифровой опыт — дизайн и анимация твоё призвание.' },
+            creative_business:{ en:'Creative Entrepreneur',    ru:'Творческий предприниматель',  enD:'You monetize imagination. Fashion, media, entertainment, and creative agencies are built by people exactly like you.',        ruD:'Ты монетизируешь творчество — медиа, мода и entertainment созданы для тебя.' },
+            creative_social:  { en:'Empathetic Creator',       ru:'Эмпатичный творец',           enD:'You use creativity to connect, heal, and inspire. Education, therapy, non-profit storytelling, and the arts are your calling.', ruD:'Ты создаёшь искусство, которое исцеляет и вдохновляет — твой путь в образование и НКО.' },
+            social_tech:      { en:'Tech Humanist',             ru:'Технологический гуманист',    enD:'You use technology to amplify human connection. Healthcare tech, EdTech, and social impact platforms are where you belong.',   ruD:'Ты применяешь технологии для людей — здравоохранение и EdTech созданы для тебя.' },
+            social_business:  { en:'Mission-Driven Leader',    ru:'Лидер с миссией',             enD:'You lead with purpose and conviction. NGOs, public policy, international development, and social ventures are your playground.', ruD:'Ты ведёшь с целью и убеждением — НКО, политика и социальные предприятия ждут тебя.' },
+            social_creative:  { en:'Storytelling Changemaker', ru:'Рассказчик-реформатор',       enD:'You inspire change through compelling stories. Journalism, documentary, teaching, and community leadership define your impact.', ruD:'Ты вдохновляешь через истории — журналистика, кино и преподавание твоя сила.' },
+          };
+
+          const STRENGTHS = {
+            tech:     ['Systems thinking', 'Logical problem solving', 'Technical precision'],
+            business: ['Strategic vision', 'Leadership instinct', 'Persuasive communication'],
+            creative: ['Visual thinking', 'Original ideation', 'Storytelling ability'],
+            social:   ['Deep empathy', 'Active listening', 'Community building'],
+          };
+          const GROWTH = {
+            tech:     ['Developing interpersonal and communication skills', 'Embracing creative ambiguity and open-ended exploration'],
+            business: ['Building technical and data literacy for stronger decisions', 'Deepening empathetic listening in team contexts'],
+            creative: ['Strengthening analytical and quantitative reasoning', 'Improving project management and follow-through'],
+            social:   ['Building technical and data skills for evidence-based work', 'Developing strategic and business planning capabilities'],
+          };
+
+          const pType = TYPES[`${top}_${second}`] || { en:'Versatile Thinker', ru:'Разносторонний мыслитель', enD:'You have a balanced mix across all domains — a genuine generalist who adapts to any challenge.', ruD:'У тебя сбалансированное сочетание из всех областей — ты настоящий универсал.' };
+          return {
+            personalityLabel: isRu ? pType.ru : pType.en,
+            personalityDesc:  isRu ? pType.ruD : pType.enD,
+            workStyle,
+            thinkingStyle,
+            strengths:   STRENGTHS[top],
+            growthAreas: GROWTH[bottom],
+          };
         };
 
         // ── Mode Selection ────────────────────────────────────────────────────
@@ -3549,20 +3849,18 @@
               </h1>
               <p className="text-gray-400 text-base leading-relaxed mb-10 max-w-lg mx-auto">
                 {lang==='ru'
-                  ? 'Ответь на вопросы об интересах и навыках — получи точный карьерный профиль и рекомендации.'
-                  : 'Answer questions about your interests and skills to find your best-fit career direction and university major.'}
+                  ? 'Ответь на вопросы об интересах и навыках — получи персональный карьерный профиль и рекомендации по специальности.'
+                  : 'Answer questions about your interests and skills to discover your best-fit career direction, personality profile, and recommended majors.'}
               </p>
-
               <p className="text-white font-bold text-xl mb-2">
                 {lang==='ru' ? 'Выбери формат теста' : 'Choose Your Test Format'}
               </p>
               <p className="text-gray-500 text-sm mb-8">
-                {lang==='ru' ? 'Оба варианта дают точный результат' : 'Both formats give you an accurate result'}
+                {lang==='ru' ? 'Оба варианта дают персональный результат' : 'Both formats give you a personalized result'}
               </p>
-
               <div className="grid sm:grid-cols-2 gap-5 max-w-2xl mx-auto">
                 {/* Quick Mode */}
-                <div onClick={() => { setMode('quick'); setStep(0); setAnswers([]); }}
+                <div onClick={() => { setMode('quick'); setAnswers([]); }}
                   className="group cursor-pointer glass-strong rounded-3xl p-7 border border-white/10 hover:border-indigo-500/50 transition-all duration-300 card-hover text-left relative overflow-hidden">
                   <div className="absolute top-4 right-4">
                     <span className="text-xs font-bold px-3 py-1 rounded-full bg-indigo-600/30 text-indigo-300 border border-indigo-500/30">
@@ -3574,25 +3872,24 @@
                   <div className="flex items-center gap-3 mb-4">
                     <span className="text-indigo-300 text-sm font-semibold">15 {lang==='ru' ? 'вопросов' : 'questions'}</span>
                     <span className="text-gray-600">·</span>
-                    <span className="text-gray-400 text-sm">~3 {lang==='ru' ? 'минуты' : 'minutes'}</span>
+                    <span className="text-gray-400 text-sm">~3 {lang==='ru' ? 'минуты' : 'min'}</span>
                   </div>
                   <p className="text-gray-400 text-sm mb-5">
                     {lang==='ru'
-                      ? 'Быстро узнай своё направление и ключевые карьерные рекомендации.'
-                      : 'Get your career direction and key recommendations fast.'}
+                      ? 'Получи главные карьерные направления и рекомендации за 3 минуты.'
+                      : 'Get your top career directions and key recommendations in under 3 minutes.'}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {(lang==='ru' ? ['Быстро','Чёткий результат','Начни сейчас'] : ['Fast','Clear result','Get started']).map((tag,i) => (
+                    {(lang==='ru' ? ['Быстро','Чёткий результат','Начни сейчас'] : ['Fast','Clear result','Start now']).map((tag,i) => (
                       <span key={i} className="text-xs text-indigo-300 bg-indigo-500/10 border border-indigo-500/20 rounded-full px-2.5 py-1">{tag}</span>
                     ))}
                   </div>
                   <div className="mt-5 flex items-center gap-2 text-indigo-400 group-hover:text-white transition-colors font-semibold text-sm">
-                    {lang==='ru' ? 'Начать' : 'Start'} →
+                    {lang==='ru' ? 'Начать →' : 'Start →'}
                   </div>
                 </div>
-
                 {/* Deep Mode */}
-                <div onClick={() => { setMode('deep'); setStep(0); setAnswers([]); }}
+                <div onClick={() => { setMode('deep'); setAnswers([]); }}
                   className="group cursor-pointer glass-strong rounded-3xl p-7 border border-white/10 hover:border-purple-500/50 transition-all duration-300 card-hover text-left relative overflow-hidden">
                   <div className="absolute top-4 right-4">
                     <span className="text-xs font-bold px-3 py-1 rounded-full bg-purple-600/30 text-purple-300 border border-purple-500/30">
@@ -3604,20 +3901,20 @@
                   <div className="flex items-center gap-3 mb-4">
                     <span className="text-purple-300 text-sm font-semibold">30 {lang==='ru' ? 'вопросов' : 'questions'}</span>
                     <span className="text-gray-600">·</span>
-                    <span className="text-gray-400 text-sm">~5 {lang==='ru' ? 'минут' : 'minutes'}</span>
+                    <span className="text-gray-400 text-sm">~5 {lang==='ru' ? 'минут' : 'min'}</span>
                   </div>
                   <p className="text-gray-400 text-sm mb-5">
                     {lang==='ru'
-                      ? 'Полный анализ — детальный профиль, баллы по категориям и развёрнутые советы.'
-                      : 'Full analysis with score breakdown, detailed profile, and deeper insights.'}
+                      ? 'Полный анализ: тип личности, стиль мышления, сильные стороны и развёрнутые рекомендации.'
+                      : 'Full analysis: personality type, thinking style, strengths, growth areas, and deeper career insights.'}
                   </p>
                   <div className="flex flex-wrap gap-2">
-                    {(lang==='ru' ? ['Полный профиль','Баллы','4 карьеры'] : ['Full profile','Score bars','4 careers']).map((tag,i) => (
+                    {(lang==='ru' ? ['Тип личности','Стиль работы','4 направления'] : ['Personality type','Work style','4 careers']).map((tag,i) => (
                       <span key={i} className="text-xs text-purple-300 bg-purple-500/10 border border-purple-500/20 rounded-full px-2.5 py-1">{tag}</span>
                     ))}
                   </div>
                   <div className="mt-5 flex items-center gap-2 text-purple-400 group-hover:text-white transition-colors font-semibold text-sm">
-                    {lang==='ru' ? 'Начать' : 'Start'} →
+                    {lang==='ru' ? 'Начать →' : 'Start →'}
                   </div>
                 </div>
               </div>
@@ -3625,39 +3922,35 @@
           </div>
         );
 
+        const isDeep = mode === 'deep';
+
         // ── Question ─────────────────────────────────────────────────────────
-        if (step < TOTAL) {
-          const q   = questions[step];
-          const pct = Math.round((step / TOTAL) * 100);
+        if (answers.length < TOTAL) {
+          const q   = questions[answers.length];
+          const pct = Math.round((answers.length / TOTAL) * 100);
           return (
             <div className="min-h-screen pt-28 pb-20 px-6 page-in">
               <div className="max-w-2xl mx-auto">
-                {/* Progress */}
                 <div className="flex items-center gap-3 mb-8">
                   <span className={`text-sm font-bold tabular-nums w-16 text-center ${isDeep ? 'text-purple-400' : 'text-indigo-400'}`}>
-                    {step+1} / {TOTAL}
+                    {answers.length + 1} / {TOTAL}
                   </span>
                   <div className="flex-1 bg-white/8 rounded-full h-2.5 overflow-hidden">
                     <div className={`h-full rounded-full transition-all duration-500 ${isDeep ? 'bg-gradient-to-r from-purple-500 to-pink-500' : 'bg-gradient-to-r from-indigo-500 to-purple-500'}`}
                       style={{width:`${pct}%`}}/>
                   </div>
-                  <button onClick={restart}
-                    className="text-gray-600 hover:text-gray-400 text-xs transition-colors btn-active">
+                  <button onClick={restart} className="text-gray-600 hover:text-gray-400 text-xs transition-colors btn-active">
                     {lang==='ru' ? 'Сначала' : 'Restart'}
                   </button>
                 </div>
-
-                {/* Question card */}
                 <div className="glass-strong rounded-3xl p-8 mb-5">
                   <p className={`text-xs font-bold uppercase tracking-widest mb-3 ${isDeep ? 'text-purple-400' : 'text-indigo-400'}`}>
-                    {lang==='ru' ? 'Вопрос' : 'Question'} {step+1}
+                    {lang==='ru' ? 'Вопрос' : 'Question'} {answers.length + 1}
                   </p>
                   <h2 className="text-2xl md:text-3xl font-black text-white leading-snug">
                     {q[lang] || q.en}
                   </h2>
                 </div>
-
-                {/* Options */}
                 <div className="space-y-2.5">
                   {q.opts.map((opt, i) => (
                     <button key={i}
@@ -3696,10 +3989,12 @@
         const primary = CAREER_RESULTS[topCat];
         const maxPts  = Math.max(sorted[0][1], 1);
         const others  = sorted.slice(1).map(([k]) => CAREER_RESULTS[k]);
+        const analysis = isDeep ? buildAnalysis(scores, sorted, lang) : null;
 
         return (
           <div className="min-h-screen pt-28 pb-20 px-6 page-in">
             <div className="max-w-3xl mx-auto">
+
               {/* Header */}
               <div className="text-center mb-10">
                 <div className="w-20 h-20 rounded-3xl bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center text-4xl mx-auto mb-5 check-pop">✅</div>
@@ -3713,12 +4008,31 @@
                 </h1>
                 <p className="text-gray-400">
                   {lang==='ru'
-                    ? `На основе ${TOTAL} ответов — ваше лучшее направление.`
-                    : `Based on your ${TOTAL} answers — your best-fit direction.`}
+                    ? `На основе ${TOTAL} ответов — ваш персональный результат.`
+                    : `Based on your ${TOTAL} answers — your personalized result.`}
                 </p>
               </div>
 
-              {/* Score breakdown — Deep only */}
+              {/* Deep: Personality type */}
+              {isDeep && analysis && (
+                <div className="glass-strong rounded-3xl p-6 mb-6 border border-purple-500/20">
+                  <p className="text-xs text-purple-400 uppercase tracking-widest font-semibold mb-3">
+                    {lang==='ru' ? 'Твой тип личности' : 'Your Personality Type'}
+                  </p>
+                  <h2 className="text-2xl font-black text-white mb-2">{analysis.personalityLabel}</h2>
+                  <p className="text-gray-300 text-sm leading-relaxed mb-5">{analysis.personalityDesc}</p>
+                  <div className="flex flex-wrap gap-3">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-blue-500/15 text-blue-300 border border-blue-500/20">
+                      🧠 {analysis.thinkingStyle}
+                    </span>
+                    <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-green-500/15 text-green-300 border border-green-500/20">
+                      🤝 {analysis.workStyle}
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {/* Deep: Score breakdown */}
               {isDeep && (
                 <div className="glass-strong rounded-3xl p-6 mb-6 border border-white/10">
                   <p className="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-4">
@@ -3726,7 +4040,7 @@
                   </p>
                   <div className="space-y-3">
                     {sorted.map(([cat, score]) => {
-                      const r   = CAREER_RESULTS[cat];
+                      const r = CAREER_RESULTS[cat];
                       const pct = Math.round((score / maxPts) * 100);
                       return (
                         <div key={cat}>
@@ -3761,16 +4075,12 @@
                     </p>
                   </div>
                 </div>
-
-                {/* Skills */}
                 <div className="flex flex-wrap gap-2 mb-5">
                   {(lang==='ru' ? primary.skillsRu : primary.skills).map((s,i) => (
                     <span key={i} className="text-xs font-semibold px-3 py-1.5 rounded-full bg-white/10 text-white border border-white/10">{s}</span>
                   ))}
                 </div>
-
-                {/* Career paths — always shown */}
-                <div className={`mb-5 ${isDeep ? 'grid sm:grid-cols-2 gap-5' : ''}`}>
+                <div className={isDeep ? 'grid sm:grid-cols-2 gap-5 mb-5' : 'mb-5'}>
                   <div>
                     <p className="text-xs text-gray-400 uppercase tracking-wider mb-3">
                       {lang==='ru' ? 'Карьерные пути' : 'Career Paths'}
@@ -3783,8 +4093,6 @@
                       ))}
                     </div>
                   </div>
-
-                  {/* Recommended majors — deep only */}
                   {isDeep && (
                     <div>
                       <p className="text-xs text-gray-400 uppercase tracking-wider mb-3">
@@ -3801,8 +4109,6 @@
                     </div>
                   )}
                 </div>
-
-                {/* Roadmap focus */}
                 <div className="glass rounded-2xl p-4 border border-white/8">
                   <p className="text-xs text-indigo-300 font-semibold uppercase tracking-wider mb-2">
                     💡 {lang==='ru' ? 'Фокус поступления' : 'Roadmap Focus'}
@@ -3812,6 +4118,36 @@
                   </p>
                 </div>
               </div>
+
+              {/* Deep: Strengths + Growth areas */}
+              {isDeep && analysis && (
+                <div className="grid sm:grid-cols-2 gap-4 mb-6">
+                  <div className="glass rounded-2xl p-5 border border-green-500/15">
+                    <p className="text-xs text-green-400 uppercase tracking-widest font-semibold mb-3">
+                      ⚡ {lang==='ru' ? 'Твои сильные стороны' : 'Your Strengths'}
+                    </p>
+                    <div className="space-y-2">
+                      {analysis.strengths.map((s,i) => (
+                        <div key={i} className="flex items-center gap-2 text-sm text-gray-200">
+                          <span className="text-green-400 text-xs">✓</span>{s}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="glass rounded-2xl p-5 border border-amber-500/15">
+                    <p className="text-xs text-amber-400 uppercase tracking-widest font-semibold mb-3">
+                      🌱 {lang==='ru' ? 'Области роста' : 'Areas to Grow'}
+                    </p>
+                    <div className="space-y-2">
+                      {analysis.growthAreas.map((g,i) => (
+                        <div key={i} className="flex items-start gap-2 text-sm text-gray-300 leading-snug">
+                          <span className="text-amber-400 text-xs mt-0.5 flex-shrink-0">→</span>{g}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* Secondary direction cards */}
               {others.length > 0 && (
@@ -3842,11 +4178,11 @@
                 </div>
               )}
 
-              {/* Action buttons */}
+              {/* Buttons */}
               <div className="flex flex-wrap gap-3 justify-center">
                 <button onClick={restart}
                   className="glass hover:bg-white/10 text-gray-300 hover:text-white font-semibold px-6 py-3 rounded-2xl transition-all btn-active">
-                  {lang==='ru' ? 'Пройти снова' : 'Retake Test'}
+                  {lang==='ru' ? '↩ Пройти снова' : '↩ Retake Test'}
                 </button>
                 {!isDeep && (
                   <button onClick={switchToDeep}
@@ -3864,6 +4200,8 @@
           </div>
         );
       }
+
+
 
 
       // ── App ────────────────────────────────────────────────────────────────
